@@ -448,6 +448,27 @@
       <column caption='% Diff Usage Frequency' datatype='real' name='[Calculation_1036390876958466078]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='AVG( IF [Churn] = 1 THEN [Usage Frequency] END )&#13;&#10;/&#13;&#10;AVG( IF [Churn] = 0 THEN [Usage Frequency] END )' />
       </column>
+      <column caption='Avg Churn Age' datatype='integer' name='[Calculation_248260942528970752]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='if [Churn]=1 THEN [Age] END' />
+      </column>
+      <column caption='Avg Churn Tenure' datatype='integer' name='[Calculation_248260942529646593]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='if [Churn]=1 THEN [Tenure] END' />
+      </column>
+      <column caption='Avg Churn Support' datatype='integer' name='[Calculation_248260942529994754]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='if [Churn]=1 THEN [Support Calls] END' />
+      </column>
+      <column caption='Avg Churn Interaction' datatype='integer' name='[Calculation_248260942530437123]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='if [Churn]=1 THEN [Last Interaction] END' />
+      </column>
+      <column caption='Avg Churn Usage' datatype='integer' name='[Calculation_248260942531067908]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='if [Churn]=1 THEN [Usage Frequency] END' />
+      </column>
+      <column caption='Avg Churn Spend' datatype='integer' name='[Calculation_248260942531411973]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='if [Churn]=1 THEN [Total Spend] END' />
+      </column>
+      <column caption='Avg Churn Payment' datatype='integer' name='[Calculation_248260942531686406]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='if [Churn]=1 THEN [Payment Delay] END' />
+      </column>
       <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='AVG([Churn])' />
       </column>
@@ -456,11 +477,6 @@
       </column>
       <column caption='% Diff Churn' datatype='real' name='[Calculation_810929419873636356]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='IF [Calculation_810929419873521667] = 0 THEN&#13;&#10;    100&#13;&#10;ELSE&#13;&#10;    [Calculation_810929419873271810] / [Calculation_810929419873521667]&#13;&#10;END' />
-      </column>
-      <column caption='Scaled_Count' datatype='real' name='[Calculation_810929419878645765]' role='measure' type='quantitative'>
-        <calculation class='tableau' formula='COUNT([CustomerID]) / WINDOW_MAX(COUNT([CustomerID]))'>
-          <table-calc ordering-type='Rows' />
-        </calculation>
       </column>
       <column caption='% Diff Age' datatype='real' name='[Calculation_810929419892670475]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='AVG( IF [Churn] = 1 THEN [Age] END )&#13;&#10;/&#13;&#10;AVG( IF [Churn] = 0 THEN [Age] END )' />
@@ -949,11 +965,15 @@
         <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
           <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
         </column>
+        <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
+          <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
+        </column>
         <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
         <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
         <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
         <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
         <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
+        <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
         <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
         <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
         <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
@@ -961,6 +981,12 @@
       </datasource-dependencies>
       <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]'>
         <groupfilter function='level-members' level='[none:Calculation_1036390876521951232:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+      </filter>
+      <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]'>
+        <groupfilter function='union' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+          <groupfilter function='member' level='[none:Calculation_1036390876753801218:nk]' member='&quot;Churned&quot;' />
+          <groupfilter function='member' level='[none:Calculation_1036390876753801218:nk]' member='&quot;Retained&quot;' />
+        </groupfilter>
       </filter>
       <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]'>
         <groupfilter function='union' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
@@ -1056,14 +1082,6 @@
         <param name='target' value='Overview page' />
       </command>
     </action>
-    <action caption='Filter 5 (generated)' name='[Action5_706A8C0A7EE24816B35559209E3FD5D9]'>
-      <activation auto-clear='true' type='on-select' />
-      <source dashboard='Overview page' type='sheet' worksheet='Page1_KPI3' />
-      <command command='tsc:tsl-filter'>
-        <param name='special-fields' value='all' />
-        <param name='target' value='Overview page' />
-      </command>
-    </action>
     <action caption='Filter 7 (generated)' name='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]'>
       <activation auto-clear='true' type='on-select' />
       <source dashboard='Second page' type='sheet' worksheet='Page2_Chart1' />
@@ -1109,7 +1127,6 @@
             <datasource caption='Fact_Customer_Churn+ (Cleaned_Customer_Churn_Dataset)' name='federated.1g8j1k10bpq0m6140fmdj1obe5af' />
           </datasources>
           <datasource-dependencies datasource='federated.1g8j1k10bpq0m6140fmdj1obe5af'>
-            <column datatype='integer' name='[Age]' role='measure' type='quantitative' />
             <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
             </column>
@@ -1128,19 +1145,15 @@
             <column caption='% Diff Churn' datatype='real' name='[Calculation_810929419873636356]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='IF [Calculation_810929419873521667] = 0 THEN&#13;&#10;    100&#13;&#10;ELSE&#13;&#10;    [Calculation_810929419873271810] / [Calculation_810929419873521667]&#13;&#10;END' />
             </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
-            </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column-instance column='[Age]' derivation='None' name='[none:Age:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Churn]' derivation='None' name='[none:Churn:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
@@ -1152,34 +1165,13 @@
             <column-instance column='[Calculation_810929419872382977]' derivation='User' name='[usr:Calculation_810929419872382977:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873636356]' derivation='User' name='[usr:Calculation_810929419873636356:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action1_54F413DDECFF4C3C9ADF21C1C383C8E6]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[none:Age:ok]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1374,7 +1366,6 @@
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -1384,7 +1375,6 @@
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Churn (copy)_810929419883192327]' derivation='None' name='[none:Churn (copy)_810929419883192327:ok]' pivot='key' type='ordinal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
@@ -1392,30 +1382,13 @@
             <column-instance column='[Calculation_810929419893805068]' derivation='Sum' name='[sum:Calculation_810929419893805068:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1585,7 +1558,6 @@
             <datasource caption='Fact_Customer_Churn+ (Cleaned_Customer_Churn_Dataset)' name='federated.1g8j1k10bpq0m6140fmdj1obe5af' />
           </datasources>
           <datasource-dependencies datasource='federated.1g8j1k10bpq0m6140fmdj1obe5af'>
-            <column datatype='integer' name='[Age]' role='measure' type='quantitative' />
             <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
             </column>
@@ -1595,9 +1567,6 @@
             <column caption='AVG(0)' datatype='real' name='[Calculation_810929419912978446]' role='measure' type='quantitative' user:unnamed='Page1_Chart3'>
               <calculation class='tableau' formula='AVG(0)' />
             </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
-            </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
@@ -1606,10 +1575,8 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column-instance column='[Age]' derivation='None' name='[none:Age:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Gender]' derivation='None' name='[none:Gender:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
@@ -1623,16 +1590,6 @@
             </column-instance>
             <column-instance column='[Calculation_810929419912978446]' derivation='User' name='[usr:Calculation_810929419912978446:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action1_54F413DDECFF4C3C9ADF21C1C383C8E6]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[none:Age:ok]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Gender:nk]' direction='ASC' />
           <slices>
@@ -1640,9 +1597,8 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1880,65 +1836,34 @@
             <datasource caption='Fact_Customer_Churn+ (Cleaned_Customer_Churn_Dataset)' name='federated.1g8j1k10bpq0m6140fmdj1obe5af' />
           </datasources>
           <datasource-dependencies datasource='federated.1g8j1k10bpq0m6140fmdj1obe5af'>
-            <column datatype='integer' name='[Age]' role='measure' type='quantitative' />
             <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
             </column>
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
-            </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
             <column-instance column='[CustomerID]' derivation='Count' name='[cnt:CustomerID:qk]' pivot='key' type='quantitative' />
-            <column-instance column='[Age]' derivation='None' name='[none:Age:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action1_54F413DDECFF4C3C9ADF21C1C383C8E6]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[none:Age:ok]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2006,64 +1931,34 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
+            <column caption='Avg Churn Age' datatype='integer' name='[Calculation_248260942528970752]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Churn]=1 THEN [Age] END' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column-instance column='[Age]' derivation='Avg' name='[avg:Age:qk]' pivot='key' type='quantitative' />
-            <column-instance column='[Age]' derivation='None' name='[none:Age:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_248260942528970752]' derivation='Avg' name='[avg:Calculation_248260942528970752:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action1_54F413DDECFF4C3C9ADF21C1C383C8E6]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[none:Age:ok]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
-          <style-rule element='cell'>
-            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Age:qk]' value='n0&quot; &quot;;-0&quot; &quot;' />
-          </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' value='#e6e6e6' />
           </style-rule>
@@ -2089,13 +1984,13 @@
             <mark class='Automatic' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Age:qk]' />
+              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942528970752:qk]' />
             </encodings>
             <customized-label>
               <formatted-text>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>&lt;</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Age:qk]</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>&gt;</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&lt;</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942528970752:qk]</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&gt;</run>
               </formatted-text>
             </customized-label>
             <style>
@@ -2130,64 +2025,33 @@
             <datasource caption='Fact_Customer_Churn+ (Cleaned_Customer_Churn_Dataset)' name='federated.1g8j1k10bpq0m6140fmdj1obe5af' />
           </datasources>
           <datasource-dependencies datasource='federated.1g8j1k10bpq0m6140fmdj1obe5af'>
-            <column datatype='integer' name='[Age]' role='measure' type='quantitative' />
             <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
             </column>
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
-            </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column-instance column='[Age]' derivation='None' name='[none:Age:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Churn]' derivation='Sum' name='[sum:Churn:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action1_54F413DDECFF4C3C9ADF21C1C383C8E6]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[none:Age:ok]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Age,Churn Category,Churn_DIM)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2200,6 +2064,13 @@
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
+          </style-rule>
+          <style-rule element='quick-filter'>
+            <format attr='title' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' value='Churn Category'>
+              <formatted-text>
+                <run fontsize='12'>Churn Category</run>
+              </formatted-text>
+            </format>
           </style-rule>
         </style>
         <panes>
@@ -2268,13 +2139,9 @@
             <column caption='AVG(0)' datatype='real' name='[Calculation_1036390876794560518]' role='measure' type='quantitative' user:unnamed='Page2_Chart1'>
               <calculation class='tableau' formula='AVG(0)' />
             </column>
-            <column caption='Last_Interaction_Group' datatype='string' name='[Calculation_1036390876881133584]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Last Interaction] &lt;=7 THEN &apos;Weak&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=14 THEN &apos;2-Weaks&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=21 THEN &apos;3-Weaks&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Last Interaction]' role='measure' type='quantitative' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -2283,7 +2150,6 @@
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[CustomerID]' derivation='Count' name='[pcto:cnt:CustomerID:qk:3]' pivot='key' type='quantitative'>
@@ -2294,33 +2160,13 @@
             </column-instance>
             <column-instance column='[Calculation_1036390876794560518]' derivation='User' name='[usr:Calculation_1036390876794560518:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action8_7F5EA70B37174CF29CDFC6A82FBBD54F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876881133584]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action9_E9BEB2DB35694F0DAA54481439D2B06F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[none:Support Calls:ok]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action10_8AFD07FC3D1F4E738747ACFDF2684918]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876521951232]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2375,6 +2221,11 @@
             <format attr='title' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' value='Tenure Group'>
               <formatted-text>
                 <run fontcolor='#f9eee4' fontsize='12'>Tenure Group</run>
+              </formatted-text>
+            </format>
+            <format attr='title' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' value='Total Spend'>
+              <formatted-text>
+                <run fontcolor='#f9eee4' fontsize='12'>Total Spend</run>
               </formatted-text>
             </format>
           </style-rule>
@@ -2581,16 +2432,12 @@
             <column caption='{[% Diff Tenure]}' datatype='real' name='[Calculation_1036390876806225932]' role='measure' type='quantitative' user:unnamed='Page2_Chart2'>
               <calculation class='tableau' formula='{[Calculation_1036390876805898251]}' />
             </column>
-            <column caption='Last_Interaction_Group' datatype='string' name='[Calculation_1036390876881133584]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Last Interaction] &lt;=7 THEN &apos;Weak&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=14 THEN &apos;2-Weaks&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=21 THEN &apos;3-Weaks&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
             <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='AVG([Churn])' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Last Interaction]' role='measure' type='quantitative' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -2600,30 +2447,11 @@
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876806225932]' derivation='Sum' name='[sum:Calculation_1036390876806225932:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Contract Length]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action8_7F5EA70B37174CF29CDFC6A82FBBD54F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876881133584]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action9_E9BEB2DB35694F0DAA54481439D2B06F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[none:Support Calls:ok]' />
-            </groupfilter>
-          </filter>
           <manual-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' direction='ASC'>
             <dictionary>
               <bucket>&quot;Year&quot;</bucket>
@@ -2640,9 +2468,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2827,16 +2653,12 @@
             <column caption='{[% Diff Support]}' datatype='real' name='[Calculation_1036390876876361743]' role='measure' type='quantitative' user:unnamed='Sheet 12'>
               <calculation class='tableau' formula='{[Calculation_1036390876876066830]}' />
             </column>
-            <column caption='Last_Interaction_Group' datatype='string' name='[Calculation_1036390876881133584]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Last Interaction] &lt;=7 THEN &apos;Weak&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=14 THEN &apos;2-Weaks&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=21 THEN &apos;3-Weaks&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
             <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='AVG([Churn])' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Last Interaction]' role='measure' type='quantitative' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -2852,24 +2674,6 @@
             <column-instance column='[Calculation_1036390876876361743]' derivation='Sum' name='[sum:Calculation_1036390876876361743:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Contract Length]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action8_7F5EA70B37174CF29CDFC6A82FBBD54F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876881133584]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action10_8AFD07FC3D1F4E738747ACFDF2684918]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876521951232]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-            </groupfilter>
-          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
@@ -2877,9 +2681,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2911,6 +2713,9 @@
                 <color>#e74d61</color>
               </color-palette>
             </encoding>
+          </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='cols' value='false' />
           </style-rule>
           <style-rule element='gridline'>
             <format attr='stroke-size' value='0' />
@@ -3063,30 +2868,11 @@
             <column-instance column='[Calculation_1036390876881133584]' derivation='None' name='[none:Calculation_1036390876881133584:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876890447890]' derivation='Sum' name='[sum:Calculation_1036390876890447890:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Contract Length]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action9_E9BEB2DB35694F0DAA54481439D2B06F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[none:Support Calls:ok]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action10_8AFD07FC3D1F4E738747ACFDF2684918]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876521951232]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-            </groupfilter>
-          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <manual-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876881133584:nk]' direction='ASC'>
             <dictionary>
@@ -3102,9 +2888,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3275,74 +3059,30 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Last_Interaction_Group' datatype='string' name='[Calculation_1036390876881133584]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Last Interaction] &lt;=7 THEN &apos;Weak&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=14 THEN &apos;2-Weaks&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=21 THEN &apos;3-Weaks&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
+            <column caption='Avg Churn Tenure' datatype='integer' name='[Calculation_248260942529646593]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Churn]=1 THEN [Tenure] END' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
-            <column datatype='integer' name='[Last Interaction]' role='measure' type='quantitative' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column-instance column='[Tenure]' derivation='Avg' name='[avg:Tenure:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_248260942529646593]' derivation='Avg' name='[avg:Calculation_248260942529646593:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Contract Length]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action8_7F5EA70B37174CF29CDFC6A82FBBD54F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876881133584]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action9_E9BEB2DB35694F0DAA54481439D2B06F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[none:Support Calls:ok]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action10_8AFD07FC3D1F4E738747ACFDF2684918]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876521951232]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3362,6 +3102,11 @@
                 <run fontsize='12'>Total Spend</run>
               </formatted-text>
             </format>
+            <format attr='title' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' value='Churn Category'>
+              <formatted-text>
+                <run fontsize='12'>Churn Category</run>
+              </formatted-text>
+            </format>
           </style-rule>
         </style>
         <panes>
@@ -3372,19 +3117,18 @@
             <mark class='Automatic' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Tenure:qk]' />
+              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942529646593:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
                 <run fontcolor='#757575'>Avg Tenure :</run>
-                <run fontcolor='#000000' fontname='Tableau Bold'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Tenure:qk]>]]></run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
               <formatted-text>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>&lt;</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Tenure:qk]</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>&gt;</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&lt;</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942529646593:qk]</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&gt;</run>
               </formatted-text>
             </customized-label>
             <style>
@@ -3425,80 +3169,36 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Last_Interaction_Group' datatype='string' name='[Calculation_1036390876881133584]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Last Interaction] &lt;=7 THEN &apos;Weak&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=14 THEN &apos;2-Weaks&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=21 THEN &apos;3-Weaks&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
+            <column caption='Avg Churn Support' datatype='integer' name='[Calculation_248260942529994754]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Churn]=1 THEN [Support Calls] END' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
-            <column datatype='integer' name='[Last Interaction]' role='measure' type='quantitative' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column-instance column='[Support Calls]' derivation='Avg' name='[avg:Support Calls:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_248260942529994754]' derivation='Avg' name='[avg:Calculation_248260942529994754:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Contract Length]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action8_7F5EA70B37174CF29CDFC6A82FBBD54F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876881133584]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action9_E9BEB2DB35694F0DAA54481439D2B06F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[none:Support Calls:ok]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action10_8AFD07FC3D1F4E738747ACFDF2684918]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876521951232]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
           <style-rule element='cell'>
-            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]' value='n#,##0.0;-#,##0.0' />
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942529994754:qk]' value='n#,##0.00;-#,##0.00' />
           </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
@@ -3518,20 +3218,19 @@
             <mark class='Automatic' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]' />
+              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942529994754:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
                 <run fontcolor='#757575'>Avg Support Calls:</run>
-                <run fontcolor='#000000' fontname='Tableau Bold'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]>]]></run>
                 <run fontcolor='#757575'>Æ&#9;</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
               <formatted-text>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>&lt;</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>&gt;</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&lt;</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942529994754:qk]</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&gt;</run>
               </formatted-text>
             </customized-label>
             <style>
@@ -3572,80 +3271,37 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Last_Interaction_Group' datatype='string' name='[Calculation_1036390876881133584]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Last Interaction] &lt;=7 THEN &apos;Weak&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=14 THEN &apos;2-Weaks&apos;&#13;&#10;ELSEIF [Last Interaction] &lt;=21 THEN &apos;3-Weaks&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
+            <column caption='Avg Churn Interaction' datatype='integer' name='[Calculation_248260942530437123]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Churn]=1 THEN [Last Interaction] END' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Last Interaction]' role='measure' type='quantitative' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column-instance column='[Last Interaction]' derivation='Avg' name='[avg:Last Interaction:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_248260942530437123]' derivation='Avg' name='[avg:Calculation_248260942530437123:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Contract Length]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action8_7F5EA70B37174CF29CDFC6A82FBBD54F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876881133584]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action9_E9BEB2DB35694F0DAA54481439D2B06F]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[none:Support Calls:ok]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action10_8AFD07FC3D1F4E738747ACFDF2684918]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876521951232]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Tenure Group,Churn Category)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Last_Interaction_Group)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Support Calls)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
           <style-rule element='cell'>
-            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Last Interaction:qk]' value='n&quot;from &quot;#,##0&quot; days&quot;;-&quot;from &quot;#,##0&quot; days&quot;' />
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942530437123:qk]' value='n&quot;from &quot;#,##0&quot; days&quot;;-&quot;from &quot;#,##0&quot; days&quot;' />
           </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
@@ -3665,19 +3321,18 @@
             <mark class='Automatic' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Last Interaction:qk]' />
+              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942530437123:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
                 <run fontcolor='#757575'>Avg Last Interaction in days </run>
-                <run fontcolor='#000000' fontname='Tableau Bold'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Last Interaction:qk]>]]></run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
               <formatted-text>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>&lt;</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Last Interaction:qk]</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold'>&gt;</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&lt;</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942530437123:qk]</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&gt;</run>
               </formatted-text>
             </customized-label>
             <style>
@@ -3720,12 +3375,6 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Total Spend Group' datatype='string' name='[Calculation_1036390876945051667]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Total Spend]&lt;=150 then &apos;150$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=200 then &apos;200$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=250 then &apos;250$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=300 then &apos;300$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=350 then &apos;350$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=400 then &apos;400$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=450 then &apos;450$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=500 then &apos;500$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=550 then &apos;550$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=600 then &apos;600$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=650 then &apos;650$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=700 then &apos;700$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=750 then &apos;750$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=800 then &apos;800$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=850 then &apos;850$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=900 then &apos;900$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=950 then &apos;950$&apos;&#13;&#10;ELSE &apos;1000$&apos;&#13;&#10;END' />
-            </column>
-            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
             <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='AVG([Churn])' />
             </column>
@@ -3736,7 +3385,6 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[CustomerID]' derivation='Count' name='[cnt:CustomerID:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
@@ -3746,27 +3394,14 @@
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action12_37D56626A8834D229B61D2449E3F672E]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876945051667]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
-            </groupfilter>
-          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3833,6 +3468,11 @@
             <format attr='title' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' value='Tenure Group'>
               <formatted-text>
                 <run fontcolor='#f9eee4' fontsize='12'>Tenure Group</run>
+              </formatted-text>
+            </format>
+            <format attr='title' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' value='Total Spend'>
+              <formatted-text>
+                <run fontcolor='#f9eee4' fontsize='12'>Total Spend</run>
               </formatted-text>
             </format>
           </style-rule>
@@ -3964,9 +3604,6 @@
             <column caption='{[% Diff Total Spend]}' datatype='real' name='[Calculation_1036390876951760921]' role='measure' type='quantitative' user:unnamed='Page3_Chart2'>
               <calculation class='tableau' formula='{[Calculation_1036390876950839318]}' />
             </column>
-            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
             <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='AVG([Churn])' />
             </column>
@@ -3977,7 +3614,6 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[CustomerID]' derivation='Count' name='[cnt:CustomerID:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
@@ -3989,27 +3625,14 @@
             <column-instance column='[Calculation_1036390876951760921]' derivation='Sum' name='[sum:Calculation_1036390876951760921:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action11_7D83228D91BF4A56870C51246D8BC4DE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Subscription Type]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
-            </groupfilter>
-          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -4174,9 +3797,6 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Total Spend Group' datatype='string' name='[Calculation_1036390876945051667]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Total Spend]&lt;=150 then &apos;150$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=200 then &apos;200$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=250 then &apos;250$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=300 then &apos;300$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=350 then &apos;350$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=400 then &apos;400$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=450 then &apos;450$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=500 then &apos;500$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=550 then &apos;550$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=600 then &apos;600$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=650 then &apos;650$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=700 then &apos;700$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=750 then &apos;750$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=800 then &apos;800$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=850 then &apos;850$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=900 then &apos;900$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=950 then &apos;950$&apos;&#13;&#10;ELSE &apos;1000$&apos;&#13;&#10;END' />
-            </column>
             <column caption='Payment Delay Group' datatype='string' name='[Calculation_1036390876952989722]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Payment Delay] &lt;= 10 THEN &apos;10 Days&apos;&#13;&#10;ELSEIF [Payment Delay] &lt;= 20 THEN &apos;20 Days&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
             </column>
@@ -4185,9 +3805,6 @@
             </column>
             <column caption='{[% Diff Payment Delay]}' datatype='real' name='[Calculation_1036390876954763292]' role='measure' type='quantitative' user:unnamed='Page3_Chart3'>
               <calculation class='tableau' formula='{[Calculation_1036390876954300443]}' />
-            </column>
-            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
             </column>
             <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='AVG([Churn])' />
@@ -4200,7 +3817,6 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[CustomerID]' derivation='Count' name='[cnt:CustomerID:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
@@ -4212,34 +3828,14 @@
             <column-instance column='[Calculation_1036390876954763292]' derivation='Sum' name='[sum:Calculation_1036390876954763292:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action11_7D83228D91BF4A56870C51246D8BC4DE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Subscription Type]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action12_37D56626A8834D229B61D2449E3F672E]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876945051667]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
-            </groupfilter>
-          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -4403,9 +3999,6 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Total Spend Group' datatype='string' name='[Calculation_1036390876945051667]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Total Spend]&lt;=150 then &apos;150$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=200 then &apos;200$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=250 then &apos;250$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=300 then &apos;300$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=350 then &apos;350$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=400 then &apos;400$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=450 then &apos;450$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=500 then &apos;500$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=550 then &apos;550$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=600 then &apos;600$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=650 then &apos;650$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=700 then &apos;700$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=750 then &apos;750$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=800 then &apos;800$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=850 then &apos;850$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=900 then &apos;900$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=950 then &apos;950$&apos;&#13;&#10;ELSE &apos;1000$&apos;&#13;&#10;END' />
-            </column>
             <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
             </column>
@@ -4437,27 +4030,14 @@
             <column-instance column='[Calculation_1036390876958687263]' derivation='Sum' name='[sum:Calculation_1036390876958687263:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action11_7D83228D91BF4A56870C51246D8BC4DE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Subscription Type]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action12_37D56626A8834D229B61D2449E3F672E]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876945051667]' />
-            </groupfilter>
-          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -4622,75 +4202,37 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Total Spend Group' datatype='string' name='[Calculation_1036390876945051667]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Total Spend]&lt;=150 then &apos;150$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=200 then &apos;200$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=250 then &apos;250$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=300 then &apos;300$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=350 then &apos;350$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=400 then &apos;400$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=450 then &apos;450$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=500 then &apos;500$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=550 then &apos;550$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=600 then &apos;600$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=650 then &apos;650$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=700 then &apos;700$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=750 then &apos;750$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=800 then &apos;800$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=850 then &apos;850$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=900 then &apos;900$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=950 then &apos;950$&apos;&#13;&#10;ELSE &apos;1000$&apos;&#13;&#10;END' />
-            </column>
-            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
+            <column caption='Avg Churn Usage' datatype='integer' name='[Calculation_248260942531067908]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Churn]=1 THEN [Usage Frequency] END' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
-            <column-instance column='[Usage Frequency]' derivation='Avg' name='[avg:Usage Frequency:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_248260942531067908]' derivation='Avg' name='[avg:Calculation_248260942531067908:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action11_7D83228D91BF4A56870C51246D8BC4DE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Subscription Type]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action12_37D56626A8834D229B61D2449E3F672E]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876945051667]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
           <style-rule element='cell'>
-            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Usage Frequency:qk]' value='n#,##0.0;-#,##0.0' />
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531067908:qk]' value='n#,##0.0;-#,##0.0' />
           </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
@@ -4707,6 +4249,11 @@
                 <run fontsize='12'>Total Spend</run>
               </formatted-text>
             </format>
+            <format attr='title' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' value='Churn Category'>
+              <formatted-text>
+                <run fontsize='12'>Churn Category</run>
+              </formatted-text>
+            </format>
           </style-rule>
         </style>
         <panes>
@@ -4717,19 +4264,18 @@
             <mark class='Automatic' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Usage Frequency:qk]' />
+              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531067908:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
                 <run fontcolor='#757575'>Avg Frequency of Usage in Last Month: </run>
-                <run fontcolor='#000000' fontname='Tableau Bold'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Usage Frequency:qk]>]]></run>
                 <run fontcolor='#000000'>Æ&#9;</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
               <formatted-text>
                 <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&lt;</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Usage Frequency:qk]</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531067908:qk]</run>
                 <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&gt;</run>
               </formatted-text>
             </customized-label>
@@ -4773,75 +4319,36 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Total Spend Group' datatype='string' name='[Calculation_1036390876945051667]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Total Spend]&lt;=150 then &apos;150$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=200 then &apos;200$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=250 then &apos;250$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=300 then &apos;300$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=350 then &apos;350$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=400 then &apos;400$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=450 then &apos;450$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=500 then &apos;500$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=550 then &apos;550$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=600 then &apos;600$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=650 then &apos;650$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=700 then &apos;700$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=750 then &apos;750$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=800 then &apos;800$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=850 then &apos;850$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=900 then &apos;900$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=950 then &apos;950$&apos;&#13;&#10;ELSE &apos;1000$&apos;&#13;&#10;END' />
-            </column>
-            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
+            <column caption='Avg Churn Spend' datatype='integer' name='[Calculation_248260942531411973]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Churn]=1 THEN [Total Spend] END' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
-            <column-instance column='[Total Spend]' derivation='Avg' name='[avg:Total Spend:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_248260942531411973]' derivation='Avg' name='[avg:Calculation_248260942531411973:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action11_7D83228D91BF4A56870C51246D8BC4DE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Subscription Type]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action12_37D56626A8834D229B61D2449E3F672E]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876945051667]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
           <style-rule element='cell'>
-            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Total Spend:qk]' value='n#,##0.0&quot;$&quot;;-#,##0.0&quot;$&quot;' />
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531411973:qk]' value='n#,##0.0&quot;$&quot;;-#,##0.0&quot;$&quot;' />
           </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
@@ -4861,19 +4368,18 @@
             <mark class='Automatic' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Total Spend:qk]' />
+              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531411973:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
                 <run fontcolor='#757575' indent='5130'>Avg Total Spend</run>
                 <run fontcolor='#000000' indent='5130'>: </run>
-                <run fontcolor='#000000' fontname='Tableau Bold' indent='5130'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Total Spend:qk]>]]></run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
               <formatted-text>
                 <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&lt;</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Total Spend:qk]</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531411973:qk]</run>
                 <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&gt;</run>
               </formatted-text>
             </customized-label>
@@ -4915,76 +4421,37 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Total Spend Group' datatype='string' name='[Calculation_1036390876945051667]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Total Spend]&lt;=150 then &apos;150$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=200 then &apos;200$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=250 then &apos;250$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=300 then &apos;300$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=350 then &apos;350$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=400 then &apos;400$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=450 then &apos;450$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=500 then &apos;500$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=550 then &apos;550$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=600 then &apos;600$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=650 then &apos;650$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=700 then &apos;700$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=750 then &apos;750$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=800 then &apos;800$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=850 then &apos;850$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=900 then &apos;900$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=950 then &apos;950$&apos;&#13;&#10;ELSE &apos;1000$&apos;&#13;&#10;END' />
-            </column>
-            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
+            <column caption='Avg Churn Payment' datatype='integer' name='[Calculation_248260942531686406]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Churn]=1 THEN [Payment Delay] END' />
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Payment Delay]' role='measure' type='quantitative' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
-            <column-instance column='[Payment Delay]' derivation='Avg' name='[avg:Payment Delay:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_248260942531686406]' derivation='Avg' name='[avg:Calculation_248260942531686406:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action11_7D83228D91BF4A56870C51246D8BC4DE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Subscription Type]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action12_37D56626A8834D229B61D2449E3F672E]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876945051667]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
           <style-rule element='cell'>
-            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Payment Delay:qk]' value='n#,##0&quot; days&quot;;-#,##0&quot; days&quot;' />
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531686406:qk]' value='n#,##0&quot; days&quot;;-#,##0&quot; days&quot;' />
           </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' data-class='subtotal' value='#e6e6e6' />
@@ -5004,18 +4471,17 @@
             <mark class='Automatic' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Payment Delay:qk]' />
+              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531686406:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
                 <run fontcolor='#757575'>Avg No of days the payment delayed:	</run>
-                <run fontcolor='#000000' fontname='Tableau Bold'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Payment Delay:qk]>]]></run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
               <formatted-text>
                 <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&lt;</run>
-                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Payment Delay:qk]</run>
+                <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531686406:qk]</run>
                 <run fontcolor='#ffffff' fontname='Tableau Bold' fontsize='14'>&gt;</run>
               </formatted-text>
             </customized-label>
@@ -5057,72 +4523,30 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
-            <column caption='Total Spend Group' datatype='string' name='[Calculation_1036390876945051667]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Total Spend]&lt;=150 then &apos;150$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=200 then &apos;200$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=250 then &apos;250$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=300 then &apos;300$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=350 then &apos;350$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=400 then &apos;400$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=450 then &apos;450$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=500 then &apos;500$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=550 then &apos;550$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=600 then &apos;600$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=650 then &apos;650$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=700 then &apos;700$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=750 then &apos;750$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=800 then &apos;800$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=850 then &apos;850$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=900 then &apos;900$&apos;&#13;&#10;ELSEIF [Total Spend]&lt;=950 then &apos;950$&apos;&#13;&#10;ELSE &apos;1000$&apos;&#13;&#10;END' />
-            </column>
             <column caption='Revenue Churn Rate' datatype='real' name='[Calculation_1036390876949241877]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='SUM(IF [Churn]=1 THEN [Total Spend] else 0 END)/&#13;&#10;SUM([Total Spend])' />
             </column>
-            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
-            </column>
-            <column aggregation='Sum' caption='Churn_DIM' datatype='integer' name='[Churn (copy)_810929419883192327]' role='dimension' type='ordinal'>
-              <calculation class='tableau' formula='[Churn]' />
-            </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
-            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876949241877]' derivation='User' name='[usr:Calculation_1036390876949241877:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action11_7D83228D91BF4A56870C51246D8BC4DE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Subscription Type]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action12_37D56626A8834D229B61D2449E3F672E]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876945051667]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
-            </groupfilter>
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]'>
-            <groupfilter function='level-members' level='[none:Churn:ok]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
-          </filter>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn_DIM,Gender)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Subscription Type)]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Total Spend Group)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -5193,11 +4617,15 @@
         <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
           <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
         </column>
+        <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
+          <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
+        </column>
         <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
         <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
         <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
         <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
         <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
+        <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
         <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
         <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
         <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
@@ -5219,7 +4647,7 @@
                 <zone fixed-size='851' forceUpdate='true' h='7750' id='8' is-fixed='true' type-v2='text' w='71584' x='6083' y='2000'>
                   <formatted-text>
                     <run fontname='Tableau Bold' fontsize='22'>Churn Dashboard | </run>
-                    <run fontname='Tableau Bold' fontsize='18'>Telecom</run>
+                    <run fontname='Tableau Bold' fontsize='18'>Overwiew &amp; Demographics</run>
                   </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5284,7 +4712,7 @@
                       <format attr='margin' value='4' />
                     </zone-style>
                   </zone>
-                  <zone h='10250' id='19' name='Page1_KPI3' w='14500' x='2333' y='26375'>
+                  <zone h='10250' id='55' name='Page1_KPI3' w='14500' x='2333' y='26375'>
                     <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
@@ -5411,7 +4839,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='47' h='6875' hidden-by-user='true' id='42' is-fixed='true' type-v2='empty' w='21666' x='77084' y='24125'>
+          <zone fixed-size='24' h='4000' hidden-by-user='true' id='42' is-fixed='true' type-v2='empty' w='21666' x='77084' y='24125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -5419,7 +4847,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+          <zone h='8500' hidden-by-user='true' id='56' mode='checkdropdown' name='Page1_KPI3' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -5427,7 +4855,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='18' h='3250' hidden-by-user='true' id='39' is-fixed='true' type-v2='empty' w='21666' x='77084' y='39500'>
+          <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -5435,7 +4863,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+          <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -5443,7 +4871,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='40' is-fixed='true' type-v2='empty' w='21666' x='77084' y='51250'>
+          <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' is-fixed='true' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -5451,7 +4879,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='10000' hidden-by-user='true' id='35' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+          <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -5459,31 +4887,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='41' is-fixed='true' type-v2='empty' w='21666' x='77084' y='65250'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='50' is-fixed='true' type-v2='empty' w='21666' x='77084' y='77750'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='10000' hidden-by-user='true' id='49' name='Page1_KPI2' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+          <zone h='10000' hidden-by-user='true' id='49' name='Page1_KPI2' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -5584,7 +4988,7 @@
                 <zone fixed-size='851' forceUpdate='true' h='7750' id='8' type-v2='text' w='71584' x='6083' y='2000'>
                   <formatted-text>
                     <run fontname='Tableau Bold' fontsize='22'>Churn Dashboard | </run>
-                    <run fontname='Tableau Bold' fontsize='18'>Telecom</run>
+                    <run fontname='Tableau Bold' fontsize='18'>Overwiew &amp; Demographics</run>
                   </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5755,16 +5159,6 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='74' h='10250' id='19' is-fixed='true' name='Page1_KPI3' w='14500' x='2333' y='26375'>
-                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
                 <zone h='10000' hidden-by-user='true' id='49' name='Page1_KPI2' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5812,11 +5206,15 @@
         <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
           <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
         </column>
+        <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
+          <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
+        </column>
         <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
         <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
         <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
         <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
         <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
+        <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
         <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
         <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
         <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
@@ -5838,7 +5236,7 @@
                 <zone fixed-size='858' forceUpdate='true' h='7750' id='8' is-fixed='true' type-v2='text' w='72167' x='6083' y='2000'>
                   <formatted-text>
                     <run fontname='Tableau Bold' fontsize='22'>Churn Dashboard | </run>
-                    <run fontname='Tableau Bold' fontsize='18'>Telecom</run>
+                    <run bold='true' fontname='Tableau Bold' fontsize='18'>Customer Behavior</run>
                   </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5892,9 +5290,9 @@
                   </zone-style>
                 </zone>
               </zone>
-              <zone fixed-size='274' friendly-name='Horizontal Cont(KPIs)' h='34250' id='11' is-fixed='true' param='horz' type-v2='layout-flow' w='98834' x='583' y='13500'>
-                <zone fixed-size='188' h='33375' id='14' is-fixed='true' param='vert' type-v2='layout-flow' w='16834' x='1166' y='14375'>
-                  <zone h='10083' id='58' name='Page2_KPI1' w='14502' x='2332' y='16125'>
+              <zone fixed-size='292' friendly-name='Horizontal Cont(KPIs)' h='36500' id='11' is-fixed='true' param='horz' type-v2='layout-flow' w='98834' x='583' y='13500'>
+                <zone fixed-size='188' h='35625' id='14' is-fixed='true' param='vert' type-v2='layout-flow' w='16834' x='1166' y='14375'>
+                  <zone h='10833' id='65' name='Page2_KPI1' w='14502' x='2332' y='16125'>
                     <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
@@ -5903,7 +5301,7 @@
                       <format attr='margin' value='4' />
                     </zone-style>
                   </zone>
-                  <zone h='10083' id='54' name='Page2_KPI2' w='14502' x='2332' y='26208'>
+                  <zone h='10833' id='54' name='Page2_KPI2' w='14502' x='2332' y='26958'>
                     <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
@@ -5912,7 +5310,7 @@
                       <format attr='margin' value='4' />
                     </zone-style>
                   </zone>
-                  <zone h='9708' id='55' name='Page2_KPI3' w='14502' x='2332' y='36291'>
+                  <zone h='10458' id='55' name='Page2_KPI3' w='14502' x='2332' y='37791'>
                     <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='36' type-h='cell' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
@@ -5930,8 +5328,8 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='564' h='33375' id='16' is-fixed='true' param='horz' type-v2='layout-flow' w='47000' x='18000' y='14375'>
-                  <zone h='33375' id='51' name='Page2_Chart1' w='47000' x='18000' y='14375'>
+                <zone fixed-size='564' h='35625' id='16' is-fixed='true' param='horz' type-v2='layout-flow' w='47000' x='18000' y='14375'>
+                  <zone h='35625' id='51' name='Page2_Chart1' w='47000' x='18000' y='14375'>
                     <layout-cache cell-count-h='1' non-cell-size-h='59' type-h='cell' type-w='scalable' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
@@ -5943,8 +5341,8 @@
                     </zone-style>
                   </zone>
                 </zone>
-                <zone h='33375' id='49' name='Page2_Chart4' w='33832' x='65000' y='14375'>
-                  <layout-cache minheight='190' type-h='scalable' type-w='cell' />
+                <zone h='35625' id='49' name='Page2_Chart4' w='33832' x='65000' y='14375'>
+                  <layout-cache cell-count-w='4' minheight='190' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5965,10 +5363,10 @@
                   <format attr='padding-left' value='7' />
                 </zone-style>
               </zone>
-              <zone h='51375' id='26' param='horz' type-v2='layout-flow' w='98834' x='583' y='47750'>
-                <zone h='49625' id='47' param='horz' type-v2='layout-flow' w='97668' x='1166' y='48625'>
-                  <zone fixed-size='735' h='49625' id='50' is-fixed='true' name='Page2_Chart3' w='62417' x='1166' y='48625'>
-                    <layout-cache minheight='211' type-h='scalable' type-w='cell' />
+              <zone h='49125' id='26' param='horz' type-v2='layout-flow' w='98834' x='583' y='50000'>
+                <zone h='47375' id='47' param='horz' type-v2='layout-flow' w='97668' x='1166' y='50875'>
+                  <zone fixed-size='735' h='47375' id='50' is-fixed='true' name='Page2_Chart3' w='62417' x='1166' y='50875'>
+                    <layout-cache minheight='191' type-h='scalable' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
                       <format attr='border-style' value='none' />
@@ -5979,7 +5377,7 @@
                       <format attr='background-color' value='#ffffff' />
                     </zone-style>
                   </zone>
-                  <zone h='49625' id='56' name='Page2_Chart2' w='35250' x='63583' y='48625'>
+                  <zone h='47375' id='56' name='Page2_Chart2' w='35250' x='63583' y='50875'>
                     <layout-cache cell-count-w='5' minheight='197' type-h='scalable' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
@@ -6036,7 +5434,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='47' h='6875' hidden-by-user='true' id='42' is-fixed='true' type-v2='empty' w='21666' x='77084' y='24125'>
+          <zone fixed-size='24' h='4000' hidden-by-user='true' id='67' is-fixed='true' type-v2='empty' w='21666' x='77084' y='24125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6044,7 +5442,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+          <zone h='8500' hidden-by-user='true' id='66' mode='checkdropdown' name='Page2_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6052,7 +5450,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='18' h='3250' hidden-by-user='true' id='39' is-fixed='true' type-v2='empty' w='21666' x='77084' y='39500'>
+          <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6060,7 +5458,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+          <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6068,7 +5466,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='40' is-fixed='true' type-v2='empty' w='21666' x='77084' y='51250'>
+          <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' is-fixed='true' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6076,7 +5474,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='10000' hidden-by-user='true' id='35' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+          <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6084,31 +5482,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='41' is-fixed='true' type-v2='empty' w='21666' x='77084' y='65250'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='60' is-fixed='true' type-v2='empty' w='21666' x='77084' y='77750'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='10000' hidden-by-user='true' id='59' name='Page2_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+          <zone h='10000' hidden-by-user='true' id='59' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6209,7 +5583,7 @@
                 <zone fixed-size='858' forceUpdate='true' h='7750' id='8' type-v2='text' w='72167' x='6083' y='2000'>
                   <formatted-text>
                     <run fontname='Tableau Bold' fontsize='22'>Churn Dashboard | </run>
-                    <run fontname='Tableau Bold' fontsize='18'>Telecom</run>
+                    <run bold='true' fontname='Tableau Bold' fontsize='18'>Customer Behavior</run>
                   </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6370,17 +5744,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='59' name='Page2_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
-                <zone fixed-size='73' h='10083' id='58' is-fixed='true' name='Page2_KPI1' w='14502' x='2332' y='16125'>
-                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
+                <zone h='10000' hidden-by-user='true' id='59' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6448,11 +5812,15 @@
         <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
           <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
         </column>
+        <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
+          <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
+        </column>
         <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
         <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
         <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
         <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
         <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
+        <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
         <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
         <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
         <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
@@ -6474,7 +5842,7 @@
                 <zone fixed-size='777' forceUpdate='true' h='6750' id='8' is-fixed='true' type-v2='text' w='65417' x='6083' y='2000'>
                   <formatted-text>
                     <run fontname='Tableau Bold' fontsize='22'>Churn Dashboard | </run>
-                    <run fontname='Tableau Bold' fontsize='18'>Telecom</run>
+                    <run fontname='Tableau Bold' fontsize='18'>Revenue Insights</run>
                   </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6570,7 +5938,7 @@
                       <format attr='background-color' value='#ffffff' />
                     </zone-style>
                   </zone>
-                  <zone h='14937' id='68' name='Page3_KPI1' w='12335' x='16999' y='30312'>
+                  <zone h='14937' id='75' name='Page3_KPI1' w='12335' x='16999' y='30312'>
                     <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
@@ -6694,7 +6062,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='47' h='6875' hidden-by-user='true' id='42' is-fixed='true' type-v2='empty' w='21666' x='77084' y='24125'>
+          <zone fixed-size='24' h='4000' hidden-by-user='true' id='42' is-fixed='true' type-v2='empty' w='21666' x='77084' y='24125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6702,7 +6070,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+          <zone h='8500' hidden-by-user='true' id='76' mode='checkdropdown' name='Page3_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6710,7 +6078,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='18' h='3250' hidden-by-user='true' id='39' is-fixed='true' type-v2='empty' w='21666' x='77084' y='39500'>
+          <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6718,7 +6086,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+          <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6726,7 +6094,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='40' is-fixed='true' type-v2='empty' w='21666' x='77084' y='51250'>
+          <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' is-fixed='true' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6734,7 +6102,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='10000' hidden-by-user='true' id='35' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+          <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6742,31 +6110,7 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='41' is-fixed='true' type-v2='empty' w='21666' x='77084' y='65250'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone fixed-size='24' h='4000' hidden-by-user='true' id='70' is-fixed='true' type-v2='empty' w='21666' x='77084' y='77750'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='10000' hidden-by-user='true' id='69' name='Page3_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+          <zone h='10000' hidden-by-user='true' id='69' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -6867,7 +6211,7 @@
                 <zone fixed-size='777' forceUpdate='true' h='6750' id='8' type-v2='text' w='65417' x='6083' y='2000'>
                   <formatted-text>
                     <run fontname='Tableau Bold' fontsize='22'>Churn Dashboard | </run>
-                    <run fontname='Tableau Bold' fontsize='18'>Telecom</run>
+                    <run fontname='Tableau Bold' fontsize='18'>Revenue Insights</run>
                   </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -7013,17 +6357,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='69' name='Page3_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
-                <zone fixed-size='112' h='14937' id='68' is-fixed='true' name='Page3_KPI1' w='12335' x='16999' y='30312'>
-                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
+                <zone h='10000' hidden-by-user='true' id='69' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -7108,7 +6442,7 @@
       <simple-id uuid='{A65FF629-6197-4E79-9C3F-D50305B18DD6}' />
     </dashboard>
   </dashboards>
-  <windows pres-mode='true' source-height='37'>
+  <windows source-height='37'>
     <window class='worksheet' name='Page1_KPI1'>
       <cards>
         <edge name='left'>
@@ -7184,6 +6518,11 @@
           </strip>
           <strip size='2147483647'>
             <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type='filter' />
           </strip>
         </edge>
       </cards>
@@ -7307,7 +6646,7 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='8' />
       <simple-id uuid='{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}' />
     </window>
     <window class='worksheet' name='Page2_KPI1'>
@@ -7332,6 +6671,7 @@
         </edge>
         <edge name='right'>
           <strip size='160'>
+            <card param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type='filter' />
             <card param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type='filter' />
           </strip>
         </edge>
@@ -7569,6 +6909,7 @@
         </edge>
         <edge name='right'>
           <strip size='160'>
+            <card param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type='filter' />
             <card param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type='filter' />
           </strip>
         </edge>
@@ -7811,7 +7152,7 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='8' />
       <simple-id uuid='{F4692315-C220-4B9D-82AD-DCC084BD16C5}' />
     </window>
   </windows>
