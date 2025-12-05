@@ -842,20 +842,20 @@
       <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
       <style>
         <style-rule element='mark'>
-          <encoding attr='color' field='[none:Churn (copy)_810929419883192327:ok]' type='palette'>
-            <map to='#e74d61'>
-              <bucket>1</bucket>
-            </map>
-            <map to='#f9eee4'>
-              <bucket>0</bucket>
-            </map>
-          </encoding>
           <encoding attr='color' field='[none:Calculation_1036390876753801218:nk]' type='palette'>
             <map to='#e74d61'>
               <bucket>&quot;Churned&quot;</bucket>
             </map>
             <map to='#f9eee4'>
               <bucket>&quot;Retained&quot;</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:Churn (copy)_810929419883192327:ok]' type='palette'>
+            <map to='#e74d61'>
+              <bucket>1</bucket>
+            </map>
+            <map to='#f9eee4'>
+              <bucket>0</bucket>
             </map>
           </encoding>
         </style-rule>
@@ -1148,6 +1148,7 @@
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
+            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -1165,6 +1166,12 @@
             <column-instance column='[Calculation_810929419872382977]' derivation='User' name='[usr:Calculation_810929419872382977:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873636356]' derivation='User' name='[usr:Calculation_810929419873636356:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Gender]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -1172,6 +1179,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1366,6 +1374,7 @@
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
+            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -1382,6 +1391,12 @@
             <column-instance column='[Calculation_810929419893805068]' derivation='Sum' name='[sum:Calculation_810929419893805068:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Gender]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -1389,6 +1404,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1513,7 +1529,6 @@
                 <run bold='true'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[cnt:CustomerID:qk]>]]></run>
                 <run>Æ&#10;</run>
                 <run fontcolor='#757575'>Churn_Rate:&#9;</run>
-                <run bold='true'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873271810:qk]>]]></run>
               </formatted-text>
             </customized-tooltip>
             <style>
@@ -1528,11 +1543,12 @@
               </style-rule>
               <style-rule element='mark'>
                 <format attr='size' value='1.813093900680542' />
-                <format attr='mark-labels-cull' value='true' />
-                <format attr='mark-labels-show' value='false' />
                 <format attr='mark-color' value='#999999' />
                 <format attr='has-stroke' value='true' />
                 <format attr='stroke-color' value='#e74d61' />
+                <format attr='mark-labels-mode' value='range' />
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='mark-labels-show' value='false' />
               </style-rule>
             </style>
           </pane>
@@ -1845,6 +1861,7 @@
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column caption='Customer ID' datatype='integer' name='[CustomerID]' role='measure' type='quantitative' />
+            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -1857,6 +1874,12 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Gender]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -1864,6 +1887,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1936,6 +1960,7 @@
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -1948,6 +1973,12 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Gender]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -1955,6 +1986,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2033,6 +2065,7 @@
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -2045,6 +2078,12 @@
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Churn]' derivation='Sum' name='[sum:Churn:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Gender]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -2052,6 +2091,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -4778,7 +4818,7 @@
               </zone>
               <zone h='50625' id='26' param='horz' type-v2='layout-flow' w='98834' x='583' y='48500'>
                 <zone h='48875' id='23' name='Page1_Chart2' w='97668' x='1166' y='49375'>
-                  <layout-cache minheight='189' type-h='scalable' type-w='cell' />
+                  <layout-cache cell-count-w='48' minheight='189' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5342,7 +5382,7 @@
                   </zone>
                 </zone>
                 <zone h='35625' id='49' name='Page2_Chart4' w='33832' x='65000' y='14375'>
-                  <layout-cache cell-count-w='4' minheight='190' type-h='scalable' type-w='cell' />
+                  <layout-cache minheight='190' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5378,7 +5418,7 @@
                     </zone-style>
                   </zone>
                   <zone h='47375' id='56' name='Page2_Chart2' w='35250' x='63583' y='50875'>
-                    <layout-cache cell-count-w='5' minheight='197' type-h='scalable' type-w='cell' />
+                    <layout-cache minheight='197' type-h='scalable' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
                       <format attr='border-style' value='none' />
@@ -5899,7 +5939,7 @@
               <zone fixed-size='274' friendly-name='Horizontal Cont(KPIs)' h='34250' id='11' is-fixed='true' param='horz' type-v2='layout-flow' w='98834' x='583' y='12750'>
                 <zone fixed-size='176' h='33375' id='66' is-fixed='true' param='horz' type-v2='layout-flow' w='14667' x='1166' y='13625'>
                   <zone fixed-size='188' h='33375' id='14' is-fixed='true' layout-strategy-id='distribute-evenly' param='vert' type-v2='layout-flow' w='14667' x='1166' y='13625'>
-                    <zone h='15000' id='57' name='Page3_KPI2' w='12334' x='2333' y='15375'>
+                    <zone h='15000' id='58' name='Page3_KPI4' w='12334' x='2333' y='15375'>
                       <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
                       <zone-style>
                         <format attr='border-color' value='#000000' />
@@ -5908,7 +5948,7 @@
                         <format attr='margin' value='4' />
                       </zone-style>
                     </zone>
-                    <zone h='14875' id='58' name='Page3_KPI4' w='12334' x='2333' y='30375'>
+                    <zone h='14875' id='57' name='Page3_KPI2' w='12334' x='2333' y='30375'>
                       <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
                       <zone-style>
                         <format attr='border-color' value='#000000' />
@@ -6646,7 +6686,7 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='8' />
+      <active id='-1' />
       <simple-id uuid='{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}' />
     </window>
     <window class='worksheet' name='Page2_KPI1'>
@@ -7152,7 +7192,7 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='8' />
+      <active id='-1' />
       <simple-id uuid='{F4692315-C220-4B9D-82AD-DCC084BD16C5}' />
     </window>
   </windows>
