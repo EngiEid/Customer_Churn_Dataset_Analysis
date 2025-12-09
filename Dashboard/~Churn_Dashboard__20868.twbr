@@ -508,6 +508,11 @@
           <groupfilter function='level-members' level='[Churn (copy)_810929419883192327]' />
         </groupfilter>
       </group>
+      <group caption='Action (Churn Category)' hidden='true' name='[Action (Churn Category)]' name-style='unqualified' user:auto-column='sheet_link'>
+        <groupfilter function='crossjoin'>
+          <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+        </groupfilter>
+      </group>
       <group caption='Action (Churn Category,Contract Length)' hidden='true' name='[Action (Churn Category,Contract Length)]' name-style='unqualified' user:auto-column='sheet_link'>
         <groupfilter function='crossjoin'>
           <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
@@ -842,20 +847,20 @@
       <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
       <style>
         <style-rule element='mark'>
-          <encoding attr='color' field='[none:Calculation_1036390876753801218:nk]' type='palette'>
-            <map to='#e74d61'>
-              <bucket>&quot;Churned&quot;</bucket>
-            </map>
-            <map to='#f9eee4'>
-              <bucket>&quot;Retained&quot;</bucket>
-            </map>
-          </encoding>
           <encoding attr='color' field='[none:Churn (copy)_810929419883192327:ok]' type='palette'>
             <map to='#e74d61'>
               <bucket>1</bucket>
             </map>
             <map to='#f9eee4'>
               <bucket>0</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:Calculation_1036390876753801218:nk]' type='palette'>
+            <map to='#e74d61'>
+              <bucket>&quot;Churned&quot;</bucket>
+            </map>
+            <map to='#f9eee4'>
+              <bucket>&quot;Retained&quot;</bucket>
             </map>
           </encoding>
         </style-rule>
@@ -983,10 +988,7 @@
         <groupfilter function='level-members' level='[none:Calculation_1036390876521951232:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
       </filter>
       <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]'>
-        <groupfilter function='union' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
-          <groupfilter function='member' level='[none:Calculation_1036390876753801218:nk]' member='&quot;Churned&quot;' />
-          <groupfilter function='member' level='[none:Calculation_1036390876753801218:nk]' member='&quot;Retained&quot;' />
-        </groupfilter>
+        <groupfilter function='level-members' level='[none:Calculation_1036390876753801218:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
       </filter>
       <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]'>
         <groupfilter function='union' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
@@ -1112,11 +1114,11 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run bold='true' fontsize='12'>Churn</run>
-            <run>Æ </run>
-            <run fontsize='10'>vs</run>
-            <run>Æ </run>
-            <run bold='true' fontsize='12'>Retention</run>
+            <run bold='true' fontcolor='#555555' fontname='Tableau Bold' fontsize='12'>Churn</run>
+            <run fontcolor='#555555'>Æ </run>
+            <run fontcolor='#555555' fontsize='10'>vs</run>
+            <run fontcolor='#555555'>Æ </run>
+            <run bold='true' fontcolor='#555555' fontname='Tableau Bold' fontsize='12'>Retention</run>
             <run>Æ&#10;</run>
           </formatted-text>
         </title>
@@ -1155,7 +1157,6 @@
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Churn]' derivation='None' name='[none:Churn:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
@@ -1172,6 +1173,7 @@
               <groupfilter function='level-members' level='[Gender]' />
             </groupfilter>
           </filter>
+          <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -1192,25 +1194,6 @@
           <style-rule element='cell'>
             <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873636356:qk]' value='n#,##0.0;-#,##0.0' />
             <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[pcto:cnt:CustomerID:qk]' value='p0.0%' />
-          </style-rule>
-          <style-rule element='mark'>
-            <encoding attr='color' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Churn:qk]' type='custom-interpolated'>
-              <color-palette custom='true' name='' type='ordered-diverging'>
-                <color>#f9eee4</color>
-                <color>#f3eae2</color>
-                <color>#eee7e0</color>
-                <color>#e9e3df</color>
-                <color>#e3e0dd</color>
-                <color>#dedcdb</color>
-                <color>#d9d9d9</color>
-                <color>#dbc2c6</color>
-                <color>#ddacb2</color>
-                <color>#e0959f</color>
-                <color>#e27d8a</color>
-                <color>#e46576</color>
-                <color>#e74d61</color>
-              </color-palette>
-            </encoding>
           </style-rule>
           <style-rule element='gridline'>
             <format attr='stroke-size' value='0' />
@@ -1268,7 +1251,7 @@
             <mark class='Pie' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <color column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Churn:qk]' />
+              <color column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' />
               <wedge-size column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[pcto:cnt:CustomerID:qk]' />
             </encodings>
             <customized-tooltip>
@@ -1333,12 +1316,15 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Æ </run>
-            <run bold='true' fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Churn</run>
-            <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'> over </run>
-            <run bold='true' fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Age</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'>Æ </run>
+            <run bold='true' fontcolor='#555555' fontname='Tableau Bold' fontsize='12'>Churn</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'>Æ </run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='12'>over</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'>Æ </run>
+            <run bold='true' fontcolor='#555555' fontname='Tableau Bold' fontsize='12'>Age</run>
             <run>Æ&#10;</run>
-            <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'> Avg Churn</run>
+            <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Æ </run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'>Avg Churn</run>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='12'>Æ </run>
             <run bold='true' fontcolor='#e74d61' fontname='Benton Sans Book'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[sum:Calculation_810929419893805068:qk]>]]></run>
             <run bold='true' fontcolor='#000000' fontname='Benton Sans Book' fontsize='12'>×  </run>
@@ -1391,6 +1377,9 @@
             <column-instance column='[Calculation_810929419893805068]' derivation='Sum' name='[sum:Calculation_810929419893805068:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category)]'>
+            <groupfilter function='level-members' level='[Calculation_1036390876753801218]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
           <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
             <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
               <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
@@ -1405,6 +1394,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1606,6 +1596,9 @@
             </column-instance>
             <column-instance column='[Calculation_810929419912978446]' derivation='User' name='[usr:Calculation_810929419912978446:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category)]'>
+            <groupfilter function='level-members' level='[Calculation_1036390876753801218]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Gender:nk]' direction='ASC' />
           <slices>
@@ -1615,6 +1608,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1730,58 +1724,6 @@
         <rows />
         <cols>([federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Gender:nk] * ([federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419912978446:qk] + [federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419912978446:qk]))</cols>
         <mark-labels>
-          <mark-label id='0'>
-            <tuple-reference>
-              <tuple-descriptor>
-                <pane-descriptor>
-                  <x-fields>
-                    <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Gender:nk]</field>
-                    <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419912978446:qk]</field>
-                  </x-fields>
-                  <y-fields />
-                </pane-descriptor>
-                <columns>
-                  <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</field>
-                  <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Gender:nk]</field>
-                  <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419912978446:qk]</field>
-                  <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[pcto:cnt:CustomerID:qk:3]</field>
-                </columns>
-              </tuple-descriptor>
-              <tuple>
-                <value>&quot;Retained&quot;</value>
-                <value>&quot;Female&quot;</value>
-                <value>0.0</value>
-                <value>0.3333088466785602</value>
-              </tuple>
-            </tuple-reference>
-            <label-position x='23' y='19' />
-          </mark-label>
-          <mark-label id='1'>
-            <tuple-reference>
-              <tuple-descriptor>
-                <pane-descriptor>
-                  <x-fields>
-                    <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Gender:nk]</field>
-                    <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419912978446:qk]</field>
-                  </x-fields>
-                  <y-fields />
-                </pane-descriptor>
-                <columns>
-                  <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</field>
-                  <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Gender:nk]</field>
-                  <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419912978446:qk]</field>
-                  <field>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[pcto:cnt:CustomerID:qk:3]</field>
-                </columns>
-              </tuple-descriptor>
-              <tuple>
-                <value>&quot;Retained&quot;</value>
-                <value>&quot;Male&quot;</value>
-                <value>0.0</value>
-                <value>0.50873119895145691</value>
-              </tuple>
-            </tuple-reference>
-            <label-position x='28' y='4' />
-          </mark-label>
           <mark-label id='2'>
             <tuple-reference>
               <tuple-descriptor>
@@ -1874,6 +1816,9 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category)]'>
+            <groupfilter function='level-members' level='[Calculation_1036390876753801218]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
           <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
             <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
               <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
@@ -1888,6 +1833,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1938,7 +1884,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontalignment='1' fontcolor='#666666' fontsize='10'>AVG Age</run>
+            <run fontalignment='1' fontcolor='#666666' fontsize='10'>AVG C Age</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -1973,6 +1919,9 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category)]'>
+            <groupfilter function='level-members' level='[Calculation_1036390876753801218]' user:ui-action-filter='[Action3_2DDEE216375443C49D92A98941515009]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
           <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
             <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
               <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
@@ -1987,6 +1936,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2065,7 +2015,6 @@
             </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
-            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
@@ -2078,12 +2027,6 @@
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Churn]' derivation='Sum' name='[sum:Churn:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]'>
-            <groupfilter function='crossjoin' user:ui-action-filter='[Action2_0D7A80BD4C1C461CAB357C694649AEEE]' user:ui-enumeration='all' user:ui-marker='enumerate'>
-              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
-              <groupfilter function='level-members' level='[Gender]' />
-            </groupfilter>
-          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -2091,7 +2034,6 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
-            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Gender)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2225,7 +2167,7 @@
             <format attr='height-header' value='10' />
           </style-rule>
           <style-rule element='label'>
-            <format attr='color' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' value='#000000' />
+            <format attr='color' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' value='#555555' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='display-field-labels' scope='cols' value='false' />
@@ -2438,11 +2380,11 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Æ </run>
-            <run fontname='Tableau Bold' fontsize='10'>Churn </run>
-            <run fontsize='10'>Distribution Over</run>
-            <run fontname='Tableau Bold' fontsize='10'> Tenure</run>
-            <run fontsize='10'> in Years</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'>Æ </run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Churn </run>
+            <run fontcolor='#555555' fontsize='10'>Distribution Over</run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'> Tenure</run>
+            <run fontcolor='#555555' fontsize='10'> in Years</run>
             <run>Æ&#10;</run>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'> Avg Churn Age</run>
             <run bold='true' fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>:</run>
@@ -2492,6 +2434,12 @@
             <column-instance column='[Calculation_1036390876806225932]' derivation='Sum' name='[sum:Calculation_1036390876806225932:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Contract Length]' />
+            </groupfilter>
+          </filter>
           <manual-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' direction='ASC'>
             <dictionary>
               <bucket>&quot;Year&quot;</bucket>
@@ -2509,6 +2457,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2664,9 +2613,9 @@
         <title>
           <formatted-text>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Æ </run>
-            <run fontname='Tableau Bold' fontsize='10'>Churn</run>
-            <run fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
-            <run fontname='Tableau Bold' fontsize='10'>Support Calls</run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Churn</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Support Calls</run>
             <run>Æ&#10;</run>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'> Avg Churn </run>
             <run bold='true' fontcolor='#e74d61' fontname='Benton Sans Book' fontsize='14'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[sum:Calculation_1036390876876361743:qk]>]]></run>
@@ -2714,6 +2663,12 @@
             <column-instance column='[Calculation_1036390876876361743]' derivation='Sum' name='[sum:Calculation_1036390876876361743:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Contract Length]' />
+            </groupfilter>
+          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
@@ -2722,6 +2677,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -2736,7 +2692,7 @@
             <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873271810:qk]' value='p0%' />
           </style-rule>
           <style-rule element='mark'>
-            <encoding attr='color' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873271810:qk]' min='0.0' num-steps='5' type='custom-interpolated'>
+            <encoding attr='color' center='0.5' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873271810:qk]' max='1.0' min='0.0' num-steps='5' type='custom-interpolated'>
               <color-palette custom='true' name='' type='ordered-diverging'>
                 <color>#f9eee4</color>
                 <color>#f3eae2</color>
@@ -2861,7 +2817,9 @@
         <title>
           <formatted-text>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Æ </run>
-            <run fontname='Benton Sans Book' fontsize='10'>Churn Distribution Over Last Interaction</run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Churn</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Last Interaction</run>
             <run>Æ&#10;</run>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'> Avg Churn </run>
             <run bold='true' fontcolor='#e74d61' fontname='Benton Sans Book' fontsize='14'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[sum:Calculation_1036390876890447890:qk]>]]></run>
@@ -2913,6 +2871,12 @@
             <column-instance column='[Calculation_1036390876890447890]' derivation='Sum' name='[sum:Calculation_1036390876890447890:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Contract Length]' />
+            </groupfilter>
+          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <manual-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876881133584:nk]' direction='ASC'>
             <dictionary>
@@ -2929,6 +2893,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3116,6 +3081,12 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Contract Length]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -3123,6 +3094,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3193,7 +3165,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontalignment='1' fontcolor='#666666' fontsize='10'>Avg Support Calls</run>
+            <run fontalignment='1' fontcolor='#666666' fontsize='10'>Avg C Support Calls</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -3226,6 +3198,12 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Contract Length]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -3233,6 +3211,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3295,7 +3274,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontalignment='1' fontcolor='#666666' fontsize='9'>Avg Last Interaction</run>
+            <run fontalignment='1' fontcolor='#666666' fontsize='9'>Avg C Last Interaction</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -3329,6 +3308,12 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action7_3179D31AE71A4D64B021B4DBB4EEE143]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Contract Length]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -3336,6 +3321,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Contract Length)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3397,9 +3383,9 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontcolor='#000000' fontname='Tableau Bold' fontsize='10'>Churn</run>
-            <run fontcolor='#000000' fontsize='10'> Distribution Over</run>
-            <run fontcolor='#000000' fontname='Tableau Bold' fontsize='10'> Subscription Types</run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Churn</run>
+            <run fontcolor='#555555' fontsize='10'> Distribution Over</run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'> Subscription Types</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -3415,6 +3401,9 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
+            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
+            </column>
             <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='AVG([Churn])' />
             </column>
@@ -3425,6 +3414,7 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[CustomerID]' derivation='Count' name='[cnt:CustomerID:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
@@ -3434,6 +3424,12 @@
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
+            </groupfilter>
+          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
@@ -3442,6 +3438,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3611,10 +3608,10 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Æ </run>
-            <run fontname='Tableau Bold' fontsize='10'>Churn</run>
-            <run fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
-            <run fontname='Tableau Bold' fontsize='10'>Total Spend</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'>Æ </run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Churn</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Total Spend</run>
             <run>Æ&#10;</run>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'> Avg Churn </run>
             <run bold='true' fontcolor='#e74d61' fontname='Benton Sans Book' fontsize='14'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[sum:Calculation_1036390876951760921:qk]>]]></run>
@@ -3644,6 +3641,9 @@
             <column caption='{[% Diff Total Spend]}' datatype='real' name='[Calculation_1036390876951760921]' role='measure' type='quantitative' user:unnamed='Page3_Chart2'>
               <calculation class='tableau' formula='{[Calculation_1036390876950839318]}' />
             </column>
+            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
+            </column>
             <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='AVG([Churn])' />
             </column>
@@ -3654,6 +3654,7 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[CustomerID]' derivation='Count' name='[cnt:CustomerID:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
@@ -3665,6 +3666,12 @@
             <column-instance column='[Calculation_1036390876951760921]' derivation='Sum' name='[sum:Calculation_1036390876951760921:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
+            </groupfilter>
+          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
@@ -3673,6 +3680,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3687,7 +3695,7 @@
             <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[sum:Calculation_1036390876951760921:qk]' value='n#,##0.00;-#,##0.00' />
           </style-rule>
           <style-rule element='mark'>
-            <encoding attr='color' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873271810:qk]' min='0.0' num-steps='5' type='custom-interpolated'>
+            <encoding attr='color' center='0.5' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873271810:qk]' max='1.0' min='0.0' num-steps='5' type='custom-interpolated'>
               <color-palette custom='true' name='' type='ordered-diverging'>
                 <color>#f9eee4</color>
                 <color>#f3eae2</color>
@@ -3814,9 +3822,9 @@
         <title>
           <formatted-text>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'>Æ </run>
-            <run fontname='Tableau Bold' fontsize='10'>Churn</run>
-            <run fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
-            <run fontname='Tableau Bold' fontsize='10'>Payment Delay</run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Churn</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Payment Delay</run>
             <run>Æ&#10;</run>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'> Avg Churn is </run>
             <run bold='true' fontcolor='#e74d61' fontname='Benton Sans Book' fontsize='14'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[sum:Calculation_1036390876954763292:qk]>]]></run>
@@ -3846,6 +3854,9 @@
             <column caption='{[% Diff Payment Delay]}' datatype='real' name='[Calculation_1036390876954763292]' role='measure' type='quantitative' user:unnamed='Page3_Chart3'>
               <calculation class='tableau' formula='{[Calculation_1036390876954300443]}' />
             </column>
+            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
+            </column>
             <column caption='Churn_Rate' datatype='real' name='[Calculation_810929419873271810]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='AVG([Churn])' />
             </column>
@@ -3857,6 +3868,7 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[CustomerID]' derivation='Count' name='[cnt:CustomerID:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
@@ -3868,6 +3880,12 @@
             <column-instance column='[Calculation_1036390876954763292]' derivation='Sum' name='[sum:Calculation_1036390876954763292:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_810929419873271810]' derivation='User' name='[usr:Calculation_810929419873271810:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
+            </groupfilter>
+          </filter>
           <natural-sort column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' direction='DESC' />
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
@@ -3876,6 +3894,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -3890,7 +3909,7 @@
             <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[sum:Calculation_1036390876954763292:qk]' value='n#,##0.00;-#,##0.00' />
           </style-rule>
           <style-rule element='mark'>
-            <encoding attr='color' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873271810:qk]' min='0.0' num-steps='5' type='custom-interpolated'>
+            <encoding attr='color' center='0.5' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[usr:Calculation_810929419873271810:qk]' max='1.0' min='0.0' num-steps='5' type='custom-interpolated'>
               <color-palette custom='true' name='' type='ordered-diverging'>
                 <color>#f9eee4</color>
                 <color>#f3eae2</color>
@@ -4016,9 +4035,9 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontname='Tableau Bold' fontsize='10'>Churn</run>
-            <run fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
-            <run fontname='Tableau Bold' fontsize='10'>Usage Frequency</run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Churn</run>
+            <run fontcolor='#555555' fontname='Benton Sans Book' fontsize='10'> Distribution Over </run>
+            <run fontcolor='#555555' fontname='Tableau Bold' fontsize='10'>Usage Frequency</run>
             <run>Æ&#10;</run>
             <run fontcolor='#000000' fontname='Benton Sans Book' fontsize='10'> Avg Churn is </run>
             <run bold='true' fontcolor='#e74d61' fontname='Benton Sans Book' fontsize='14'><![CDATA[<[federated.1g8j1k10bpq0m6140fmdj1obe5af].[sum:Calculation_1036390876958687263:qk]>]]></run>
@@ -4226,7 +4245,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontalignment='1' fontcolor='#666666' fontsize='9'>Avg Usage Frequency</run>
+            <run fontalignment='1' fontcolor='#666666' fontsize='9'>Avg C Usage Frequency</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -4341,7 +4360,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontalignment='1' fontcolor='#666666' fontsize='9'>Avg Total</run>
+            <run fontalignment='1' fontcolor='#666666' fontsize='9'>Avg C Total</run>
             <run fontalignment='1'>Æ&#10;</run>
             <run fontalignment='1' fontcolor='#666666' fontsize='9'> Spend</run>
           </formatted-text>
@@ -4359,6 +4378,9 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
+            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
+            </column>
             <column caption='Avg Churn Spend' datatype='integer' name='[Calculation_248260942531411973]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='if [Churn]=1 THEN [Total Spend] END' />
             </column>
@@ -4368,6 +4390,7 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[Calculation_248260942531411973]' derivation='Avg' name='[avg:Calculation_248260942531411973:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
@@ -4376,6 +4399,12 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -4383,6 +4412,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -4445,7 +4475,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run fontalignment='1' fontcolor='#666666' fontsize='9'>Avg Payment Delay</run>
+            <run fontalignment='1' fontcolor='#666666' fontsize='9'>Avg C Payment Delay</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -4461,6 +4491,9 @@
             <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
             </column>
+            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
+            </column>
             <column caption='Avg Churn Payment' datatype='integer' name='[Calculation_248260942531686406]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='if [Churn]=1 THEN [Payment Delay] END' />
             </column>
@@ -4471,6 +4504,7 @@
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[Calculation_248260942531686406]' derivation='Avg' name='[avg:Calculation_248260942531686406:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
@@ -4479,6 +4513,12 @@
             <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -4486,6 +4526,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -4566,12 +4607,16 @@
             <column caption='Revenue Churn Rate' datatype='real' name='[Calculation_1036390876949241877]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='SUM(IF [Churn]=1 THEN [Total Spend] else 0 END)/&#13;&#10;SUM([Total Spend])' />
             </column>
+            <column caption='Usage Frequency Group' datatype='string' name='[Calculation_1036390876957245469]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [Usage Frequency] &lt;= 10 THEN &apos;10 Times&apos;&#13;&#10;ELSEIF [Usage Frequency] &lt;= 20 THEN &apos;20 Times&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
+            </column>
             <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
             <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
             <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
             <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
             <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
             <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Usage Frequency]' role='measure' type='quantitative' />
             <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
             <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
@@ -4580,6 +4625,12 @@
             <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1036390876949241877]' derivation='User' name='[usr:Calculation_1036390876949241877:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action14_EF31C894B9B144939792F812FD5E2B89]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Calculation_1036390876753801218]' />
+              <groupfilter function='level-members' level='[Calculation_1036390876957245469]' />
+            </groupfilter>
+          </filter>
           <slices>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
@@ -4587,6 +4638,7 @@
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
             <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[Action (Churn Category,Usage Frequency Group)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -4645,6 +4697,94 @@
       </table>
       <simple-id uuid='{1B4D280A-E960-4939-870D-50750F894D36}' />
     </worksheet>
+    <worksheet name='Payment Delay-SupportCalls-Relation'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Fact_Customer_Churn+ (Cleaned_Customer_Churn_Dataset)' name='federated.1g8j1k10bpq0m6140fmdj1obe5af' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1g8j1k10bpq0m6140fmdj1obe5af'>
+            <column caption='Tenure Group' datatype='string' name='[Calculation_1036390876521951232]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='If [Tenure] &lt;=12 then &apos;Year&apos;&#13;&#10;ELSEIF [Tenure] &lt;=24 then &apos;2-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=36 then &apos;3-Years&apos;&#13;&#10;ELSEIF [Tenure] &lt;=48 then &apos;4-Years&apos;&#13;&#10;ELSE &apos;5-Years&apos;&#13;&#10;END' />
+            </column>
+            <column caption='Churn Category' datatype='string' name='[Calculation_1036390876753801218]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [Churn] = 0 THEN &apos;Retained&apos;&#13;&#10;ELSE &apos;Churned&apos;&#13;&#10;END' />
+            </column>
+            <column caption='Payment Delay Group' datatype='string' name='[Calculation_1036390876952989722]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [Payment Delay] &lt;= 10 THEN &apos;10 Days&apos;&#13;&#10;ELSEIF [Payment Delay] &lt;= 20 THEN &apos;20 Days&apos;&#13;&#10;ELSE &apos;More&apos;&#13;&#10;END' />
+            </column>
+            <column datatype='integer' name='[Churn]' role='measure' type='quantitative' />
+            <column datatype='string' name='[Contract Length]' role='dimension' type='nominal' />
+            <column datatype='integer' name='[Payment Delay]' role='measure' type='quantitative' />
+            <column datatype='string' name='[Subscription Type]' role='dimension' type='nominal' />
+            <column datatype='integer' name='[Support Calls]' role='measure' type='quantitative' />
+            <column datatype='integer' default-format='n#,##0.0;-#,##0.0' name='[Tenure]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Total Spend]' role='measure' type='quantitative' />
+            <column-instance column='[Support Calls]' derivation='Avg' name='[avg:Support Calls:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1036390876521951232]' derivation='None' name='[none:Calculation_1036390876521951232:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_1036390876753801218]' derivation='None' name='[none:Calculation_1036390876753801218:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_1036390876952989722]' derivation='None' name='[none:Calculation_1036390876952989722:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Contract Length]' derivation='None' name='[none:Contract Length:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Subscription Type]' derivation='None' name='[none:Subscription Type:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Support Calls]' derivation='None' name='[none:Support Calls:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Total Spend]' derivation='None' name='[none:Total Spend:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <slices>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]</column>
+            <column>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' domain-expand='false' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]' field-type='quantitative' max='5.0949515003200876' min='2.8' range-type='fixed' scope='rows' type='space' />
+            <format attr='display' class='0' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]' scope='rows' value='false' />
+            <format attr='stroke-size' value='0' />
+            <format attr='line-visibility' value='off' />
+          </style-rule>
+          <style-rule element='cell'>
+            <format attr='width' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876952989722:nk]' value='169' />
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]' value='n#,##0.00;-#,##0.00' />
+          </style-rule>
+          <style-rule element='gridline'>
+            <format attr='stroke-size' value='0' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <text column='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='cell'>
+                <format attr='vertical-align' value='bottom' />
+                <format attr='text-align' value='right' />
+              </style-rule>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='mark-color' value='#e74d61' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Support Calls:qk]</rows>
+        <cols>[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876952989722:nk]</cols>
+      </table>
+      <simple-id uuid='{030F3E26-F4CD-4121-BE90-ED96DDD41968}' />
+    </worksheet>
   </worksheets>
   <dashboards>
     <dashboard enable-sort-zone-taborder='true' name='Overview page'>
@@ -4687,7 +4827,7 @@
                 <zone fixed-size='851' forceUpdate='true' h='7750' id='8' is-fixed='true' type-v2='text' w='71584' x='6083' y='2000'>
                   <formatted-text>
                     <run fontname='Tableau Bold' fontsize='22'>Churn Dashboard | </run>
-                    <run fontname='Tableau Bold' fontsize='18'>Overwiew &amp; Demographics</run>
+                    <run fontname='Tableau Bold' fontsize='18'>Overview &amp; Demographics</run>
                   </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -4818,13 +4958,13 @@
               </zone>
               <zone h='50625' id='26' param='horz' type-v2='layout-flow' w='98834' x='583' y='48500'>
                 <zone h='48875' id='23' name='Page1_Chart2' w='97668' x='1166' y='49375'>
-                  <layout-cache cell-count-w='48' minheight='189' type-h='scalable' type-w='cell' />
+                  <layout-cache cell-count-w='48' minheight='194' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
                     <format attr='border-width' value='0' />
                     <format attr='margin' value='7' />
-                    <format attr='margin-top' value='7' />
+                    <format attr='margin-top' value='0' />
                     <format attr='margin-right' value='7' />
                     <format attr='margin-left' value='7' />
                     <format attr='padding' value='4' />
@@ -4944,19 +5084,18 @@
           </zone-style>
         </zone>
         <zone h='8750' id='28' layout-strategy-id='distribute-evenly' param='horz' type-v2='layout-flow' w='20417' x='77667' y='2375'>
-          <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-            <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+          <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+            <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
               <button-visual-state>
-                <image-path>Image/3before.png</image-path>
-                <tooltip-text>Show Third page</tooltip-text>
+                <image-path>Image/Overview after.png</image-path>
               </button-visual-state>
             </button>
             <zone-style>
-              <format attr='border-color' value='#e74d61' />
+              <format attr='border-color' value='#f9eee4' />
               <format attr='border-style' value='dotted' />
               <format attr='border-width' value='1' />
               <format attr='margin' value='4' />
-              <format attr='background-color' value='#ffffff' />
+              <format attr='background-color' value='#e74d61' />
             </zone-style>
           </zone>
           <zone h='8750' id='29' type-v2='dashboard-object' w='5084' x='82833' y='2375'>
@@ -4974,18 +5113,19 @@
               <format attr='background-color' value='#ffffff' />
             </zone-style>
           </zone>
-          <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-            <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+          <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+            <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
               <button-visual-state>
-                <image-path>Image/Overview after.png</image-path>
+                <image-path>Image/3before.png</image-path>
+                <tooltip-text>Show Third page</tooltip-text>
               </button-visual-state>
             </button>
             <zone-style>
-              <format attr='border-color' value='#f9eee4' />
+              <format attr='border-color' value='#e74d61' />
               <format attr='border-style' value='dotted' />
               <format attr='border-width' value='1' />
               <format attr='margin' value='4' />
-              <format attr='background-color' value='#e74d61' />
+              <format attr='background-color' value='#ffffff' />
             </zone-style>
           </zone>
           <zone h='8750' id='43' type-v2='dashboard-object' w='5083' x='93000' y='2375'>
@@ -5012,10 +5152,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='1900' minheight='1900' sizing-mode='vscroll' />
+          <size maxheight='1950' minheight='1950' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='54' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='84000' id='53' param='vert' type-v2='layout-flow' w='84000' x='8000' y='8000'>
+            <zone h='100000' id='58' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='57' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
                 <zone fixed-size='54' h='7750' id='27' is-fixed='true' is-scaled='1' param='Image/Logo.png' type-v2='bitmap' w='5500' x='583' y='2000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5028,7 +5168,7 @@
                 <zone fixed-size='851' forceUpdate='true' h='7750' id='8' type-v2='text' w='71584' x='6083' y='2000'>
                   <formatted-text>
                     <run fontname='Tableau Bold' fontsize='22'>Churn Dashboard | </run>
-                    <run fontname='Tableau Bold' fontsize='18'>Overwiew &amp; Demographics</run>
+                    <run fontname='Tableau Bold' fontsize='18'>Overview &amp; Demographics</run>
                   </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5038,20 +5178,19 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+                <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/3before.png</image-path>
-                      <tooltip-text>Show Third page</tooltip-text>
+                      <image-path>Image/Overview after.png</image-path>
                     </button-visual-state>
                   </button>
                   <zone-style>
-                    <format attr='border-color' value='#e74d61' />
+                    <format attr='border-color' value='#f9eee4' />
                     <format attr='border-style' value='dotted' />
                     <format attr='border-width' value='1' />
                     <format attr='margin' value='4' />
                     <format attr='padding' value='0' />
-                    <format attr='background-color' value='#ffffff' />
+                    <format attr='background-color' value='#e74d61' />
                   </zone-style>
                 </zone>
                 <zone h='8750' id='29' type-v2='dashboard-object' w='5084' x='82833' y='2375'>
@@ -5070,19 +5209,20 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+                <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/Overview after.png</image-path>
+                      <image-path>Image/3before.png</image-path>
+                      <tooltip-text>Show Third page</tooltip-text>
                     </button-visual-state>
                   </button>
                   <zone-style>
-                    <format attr='border-color' value='#f9eee4' />
+                    <format attr='border-color' value='#e74d61' />
                     <format attr='border-style' value='dotted' />
                     <format attr='border-width' value='1' />
                     <format attr='margin' value='4' />
                     <format attr='padding' value='0' />
-                    <format attr='background-color' value='#e74d61' />
+                    <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
                 <zone fixed-size='173' forceUpdate='true' h='3750' id='44' type-v2='text' w='15584' x='583' y='9750'>
@@ -5131,7 +5271,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5140,7 +5280,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5149,7 +5289,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='35' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+                <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5158,7 +5298,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
+                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5199,7 +5339,26 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='49' name='Page1_KPI2' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+                <zone h='8500' hidden-by-user='true' id='56' mode='checkdropdown' name='Page1_KPI3' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='74' h='10250' id='55' is-fixed='true' name='Page1_KPI3' w='14500' x='2333' y='26375'>
+                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone h='10000' hidden-by-user='true' id='49' name='Page1_KPI2' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5219,7 +5378,7 @@
                   </zone-style>
                 </zone>
                 <zone fixed-size='280' h='48875' id='23' is-fixed='true' name='Page1_Chart2' w='97668' x='1166' y='49375'>
-                  <layout-cache minheight='197' minwidth='100' type-h='scalable' type-w='scalable' />
+                  <layout-cache cell-count-w='48' minheight='194' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5382,7 +5541,7 @@
                   </zone>
                 </zone>
                 <zone h='35625' id='49' name='Page2_Chart4' w='33832' x='65000' y='14375'>
-                  <layout-cache minheight='190' type-h='scalable' type-w='cell' />
+                  <layout-cache cell-count-w='4' minheight='191' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5418,7 +5577,7 @@
                     </zone-style>
                   </zone>
                   <zone h='47375' id='56' name='Page2_Chart2' w='35250' x='63583' y='50875'>
-                    <layout-cache minheight='197' type-h='scalable' type-w='cell' />
+                    <layout-cache cell-count-w='5' minheight='197' type-h='scalable' type-w='cell' />
                     <zone-style>
                       <format attr='border-color' value='#000000' />
                       <format attr='border-style' value='none' />
@@ -5539,11 +5698,11 @@
           </zone-style>
         </zone>
         <zone h='8750' id='28' layout-strategy-id='distribute-evenly' param='horz' type-v2='layout-flow' w='20417' x='77667' y='2375'>
-          <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-            <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+          <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+            <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
               <button-visual-state>
-                <image-path>Image/3before.png</image-path>
-                <tooltip-text>View the payment dashboard</tooltip-text>
+                <image-path>Image/Overview before.png</image-path>
+                <tooltip-text>View overview page</tooltip-text>
               </button-visual-state>
             </button>
             <zone-style>
@@ -5568,11 +5727,11 @@
               <format attr='background-color' value='#e74d61' />
             </zone-style>
           </zone>
-          <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-            <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+          <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+            <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
               <button-visual-state>
-                <image-path>Image/Overview before.png</image-path>
-                <tooltip-text>View overview page</tooltip-text>
+                <image-path>Image/3before.png</image-path>
+                <tooltip-text>View the payment dashboard</tooltip-text>
               </button-visual-state>
             </button>
             <zone-style>
@@ -5607,10 +5766,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='2200' minheight='2200' sizing-mode='vscroll' />
+          <size maxheight='2300' minheight='2300' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='64' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='63' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
+            <zone h='100000' id='69' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='68' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
                 <zone fixed-size='54' h='7750' id='27' is-fixed='true' is-scaled='1' param='Image/Logo.png' type-v2='bitmap' w='5500' x='583' y='2000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5633,11 +5792,11 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+                <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/3before.png</image-path>
-                      <tooltip-text>View the payment dashboard</tooltip-text>
+                      <image-path>Image/Overview before.png</image-path>
+                      <tooltip-text>View overview page</tooltip-text>
                     </button-visual-state>
                   </button>
                   <zone-style>
@@ -5664,11 +5823,11 @@
                     <format attr='background-color' value='#e74d61' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+                <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/Overview before.png</image-path>
-                      <tooltip-text>View overview page</tooltip-text>
+                      <image-path>Image/3before.png</image-path>
+                      <tooltip-text>View the payment dashboard</tooltip-text>
                     </button-visual-state>
                   </button>
                   <zone-style>
@@ -5726,7 +5885,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5735,7 +5894,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5744,7 +5903,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='35' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+                <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5753,7 +5912,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
+                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5762,8 +5921,17 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='245' h='33375' id='51' is-fixed='true' name='Page2_Chart1' w='47000' x='18000' y='14375'>
-                  <layout-cache cell-count-h='1' minwidth='0' non-cell-size-h='59' type-h='cell' type-w='scalable' />
+                <zone h='10000' hidden-by-user='true' id='59' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='263' h='35625' id='51' is-fixed='true' name='Page2_Chart1' w='47000' x='18000' y='14375'>
+                  <layout-cache cell-count-h='1' non-cell-size-h='59' type-h='cell' type-w='scalable' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5773,8 +5941,8 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='245' h='33375' id='49' is-fixed='true' name='Page2_Chart4' w='33832' x='65000' y='14375'>
-                  <layout-cache cell-count-w='4' minheight='190' type-h='scalable' type-w='cell' />
+                <zone fixed-size='263' h='35625' id='49' is-fixed='true' name='Page2_Chart4' w='33832' x='65000' y='14375'>
+                  <layout-cache cell-count-w='4' minheight='191' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5784,7 +5952,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='59' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+                <zone h='8500' hidden-by-user='true' id='66' mode='checkdropdown' name='Page2_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5793,7 +5961,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='72' h='10083' id='54' is-fixed='true' name='Page2_KPI2' w='14502' x='2332' y='26208'>
+                <zone fixed-size='79' h='10833' id='65' is-fixed='true' name='Page2_KPI1' w='14502' x='2332' y='16125'>
                   <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5803,7 +5971,17 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='70' h='9708' id='55' is-fixed='true' name='Page2_KPI3' w='14502' x='2332' y='36291'>
+                <zone fixed-size='78' h='10833' id='54' is-fixed='true' name='Page2_KPI2' w='14502' x='2332' y='26958'>
+                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='76' h='10458' id='55' is-fixed='true' name='Page2_KPI3' w='14502' x='2332' y='37791'>
                   <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='36' type-h='cell' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5813,8 +5991,8 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='49625' id='50' is-fixed='true' name='Page2_Chart3' w='62417' x='1166' y='48625'>
-                  <layout-cache minheight='196' minwidth='100' type-h='scalable' type-w='scalable' />
+                <zone fixed-size='280' h='47375' id='50' is-fixed='true' name='Page2_Chart3' w='62417' x='1166' y='50875'>
+                  <layout-cache minheight='191' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5824,8 +6002,8 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='49625' id='56' is-fixed='true' name='Page2_Chart2' w='35250' x='63583' y='48625'>
-                  <layout-cache cell-count-w='5' minheight='197' type-h='scalable' type-w='cell' />
+                <zone fixed-size='280' h='47375' id='56' is-fixed='true' name='Page2_Chart2' w='35250' x='63583' y='50875'>
+                  <layout-cache minheight='197' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6167,18 +6345,19 @@
           </zone-style>
         </zone>
         <zone h='8750' id='28' layout-strategy-id='distribute-evenly' param='horz' type-v2='layout-flow' w='20417' x='77667' y='2375'>
-          <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-            <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+          <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+            <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
               <button-visual-state>
-                <image-path>Image/3after.png</image-path>
+                <image-path>Image/Overview before.png</image-path>
+                <tooltip-text>View overview page</tooltip-text>
               </button-visual-state>
             </button>
             <zone-style>
-              <format attr='border-color' value='#f9eee4' />
+              <format attr='border-color' value='#e74d61' />
               <format attr='border-style' value='dotted' />
               <format attr='border-width' value='1' />
               <format attr='margin' value='4' />
-              <format attr='background-color' value='#e74d61' />
+              <format attr='background-color' value='#ffffff' />
             </zone-style>
           </zone>
           <zone h='8750' id='29' type-v2='dashboard-object' w='5084' x='82833' y='2375'>
@@ -6196,19 +6375,18 @@
               <format attr='background-color' value='#ffffff' />
             </zone-style>
           </zone>
-          <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-            <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+          <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+            <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
               <button-visual-state>
-                <image-path>Image/Overview before.png</image-path>
-                <tooltip-text>View overview page</tooltip-text>
+                <image-path>Image/3after.png</image-path>
               </button-visual-state>
             </button>
             <zone-style>
-              <format attr='border-color' value='#e74d61' />
+              <format attr='border-color' value='#f9eee4' />
               <format attr='border-style' value='dotted' />
               <format attr='border-width' value='1' />
               <format attr='margin' value='4' />
-              <format attr='background-color' value='#ffffff' />
+              <format attr='background-color' value='#e74d61' />
             </zone-style>
           </zone>
           <zone h='8750' id='43' type-v2='dashboard-object' w='5083' x='93000' y='2375'>
@@ -6235,10 +6413,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='2400' minheight='2400' sizing-mode='vscroll' />
+          <size maxheight='2450' minheight='2450' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='74' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='73' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
+            <zone h='100000' id='78' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='77' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
                 <zone fixed-size='46' h='6750' id='27' is-fixed='true' is-scaled='1' param='Image/Logo.png' type-v2='bitmap' w='5500' x='583' y='2000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6261,19 +6439,20 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+                <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/3after.png</image-path>
+                      <image-path>Image/Overview before.png</image-path>
+                      <tooltip-text>View overview page</tooltip-text>
                     </button-visual-state>
                   </button>
                   <zone-style>
-                    <format attr='border-color' value='#f9eee4' />
+                    <format attr='border-color' value='#e74d61' />
                     <format attr='border-style' value='dotted' />
                     <format attr='border-width' value='1' />
                     <format attr='margin' value='4' />
                     <format attr='padding' value='0' />
-                    <format attr='background-color' value='#e74d61' />
+                    <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
                 <zone h='8750' id='29' type-v2='dashboard-object' w='5084' x='82833' y='2375'>
@@ -6292,20 +6471,19 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+                <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/Overview before.png</image-path>
-                      <tooltip-text>View overview page</tooltip-text>
+                      <image-path>Image/3after.png</image-path>
                     </button-visual-state>
                   </button>
                   <zone-style>
-                    <format attr='border-color' value='#e74d61' />
+                    <format attr='border-color' value='#f9eee4' />
                     <format attr='border-style' value='dotted' />
                     <format attr='border-width' value='1' />
                     <format attr='margin' value='4' />
                     <format attr='padding' value='0' />
-                    <format attr='background-color' value='#ffffff' />
+                    <format attr='background-color' value='#e74d61' />
                   </zone-style>
                 </zone>
                 <zone fixed-size='173' forceUpdate='true' h='4000' id='44' type-v2='text' w='15584' x='583' y='8750'>
@@ -6354,7 +6532,7 @@
                   </zone-style>
                 </zone>
                 <zone fixed-size='237' h='33375' id='62' is-fixed='true' name='Page3_Chart4' w='32166' x='66667' y='13625'>
-                  <layout-cache minheight='189' type-h='scalable' type-w='cell' />
+                  <layout-cache cell-count-w='3' minheight='189' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6376,7 +6554,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='112' h='15000' id='57' is-fixed='true' name='Page3_KPI2' w='12334' x='2333' y='15375'>
+                <zone fixed-size='112' h='15000' id='58' is-fixed='true' name='Page3_KPI4' w='12334' x='2333' y='15375'>
                   <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6397,7 +6575,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='69' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+                <zone h='8500' hidden-by-user='true' id='76' mode='checkdropdown' name='Page3_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6406,7 +6584,17 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='111' h='14875' id='58' is-fixed='true' name='Page3_KPI4' w='12334' x='2333' y='30375'>
+                <zone fixed-size='112' h='14937' id='75' is-fixed='true' name='Page3_KPI1' w='12335' x='16999' y='30312'>
+                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='111' h='14875' id='57' is-fixed='true' name='Page3_KPI2' w='12334' x='2333' y='30375'>
                   <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6427,7 +6615,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6436,7 +6624,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6445,7 +6633,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='35' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+                <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6454,7 +6642,16 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
+                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone h='10000' hidden-by-user='true' id='69' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6593,7 +6790,7 @@
         </edge>
         <edge name='right'>
           <strip size='160'>
-            <card pane-specification-id='1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Churn:qk]' type='color' />
+            <card pane-specification-id='1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type='color' />
           </strip>
         </edge>
       </cards>
@@ -6686,7 +6883,7 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='29' />
       <simple-id uuid='{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}' />
     </window>
     <window class='worksheet' name='Page2_KPI1'>
@@ -6900,7 +7097,7 @@
       </viewpoint>
       <simple-id uuid='{1BA647D3-60DB-4881-9DF2-642F3E06E56E}' />
     </window>
-    <window class='dashboard' name='Second page'>
+    <window class='dashboard' maximized='true' name='Second page'>
       <viewpoints>
         <viewpoint name='Page2_Chart1'>
           <zoom type='entire-view' />
@@ -7165,7 +7362,7 @@
       </viewpoint>
       <simple-id uuid='{EC43FA89-6D10-4D73-B67A-3981771C172F}' />
     </window>
-    <window class='dashboard' maximized='true' name='Third Page'>
+    <window class='dashboard' name='Third Page'>
       <viewpoints>
         <viewpoint name='Page3_Chart1'>
           <zoom type='entire-view' />
@@ -7194,6 +7391,29 @@
       </viewpoints>
       <active id='-1' />
       <simple-id uuid='{F4692315-C220-4B9D-82AD-DCC084BD16C5}' />
+    </window>
+    <window class='worksheet' name='Payment Delay-SupportCalls-Relation'>
+      <cards>
+        <edge name='left'>
+          <strip size='157'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{0BAB4E11-463D-4AAA-A9AB-520C64C4B0B4}' />
     </window>
   </windows>
 </workbook>
