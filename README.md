@@ -70,8 +70,7 @@ We built a **customer churn prediction model using XGBoost**.
 
 ## 🌐 Web Application
 A **Streamlit web application** was developed to:
-- Display churn insights interactively
-- Allow users to explore customer data
+- Display model performance metrics
 - Predict churn probability using the trained XGBoost model
 
 ---
@@ -86,18 +85,3 @@ A **Streamlit web application** was developed to:
 - **Git & GitHub** – Version control
 
 ---
-
-## 🚀 How to Run the Project
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/customer-churn-analysis.git
-
-# Navigate to project directory
-cd customer-churn-analysis
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run Streamlit app
-streamlit run app.py
