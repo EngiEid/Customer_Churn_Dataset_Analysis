@@ -23,7 +23,7 @@
     <ZoneFriendlyName />
     <ZoneVisibilityControl />
   </document-format-change-manifest>
-  <repository-location id='Churn_Dashboard_17647194498900' path='/workbooks' revision='1.0' />
+  <repository-location id='Churn_Dashboard_17647194498900' path='/workbooks' revision='1.3' />
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
     <preference name='ui.shelf.height' value='26' />
@@ -573,7 +573,7 @@
         </groupfilter>
       </group>
       <extract _.fcp.VConnDownstreamExtractsWithWarnings.true...user-specific='false' count='-1' enabled='true' object-id='' units='records'>
-        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='Data/TableauTemp/TEMP_1jyh8x70fn8oem11vg4v61yievav.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='' username='tableau_internal_user'>
+        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='Data/TableauTemp/TEMP_0v6z47s1bde20110s7ymg151zo04.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='' username='tableau_internal_user'>
           <relation type='collection'>
             <relation name='Fact!Customer!Churn_7A7DA5E17A5A4B35A49A3A477DD4C67F' table='[Extract].[Fact!Customer!Churn_7A7DA5E17A5A4B35A49A3A477DD4C67F]' type='table' />
             <relation name='Dim!Contract_37847D8A2ED740959DCF06DA357A562F' table='[Extract].[Dim!Contract_37847D8A2ED740959DCF06DA357A562F]' type='table' />
@@ -1842,7 +1842,7 @@
         </view>
         <style>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -1944,8 +1944,11 @@
           <aggregation value='true' />
         </view>
         <style>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942528970752:qk]' value='n#,##0;-#,##0' />
+          </style-rule>
           <style-rule element='pane'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='table'>
             <format attr='background-color' value='#ffffff' />
@@ -2045,7 +2048,7 @@
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -3102,11 +3105,14 @@
           <aggregation value='true' />
         </view>
         <style>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942529646593:qk]' value='n#,##0&quot; Month&quot;;-#,##0&quot; Month&quot;' />
+          </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -3220,13 +3226,13 @@
         </view>
         <style>
           <style-rule element='cell'>
-            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942529994754:qk]' value='n#,##0.00;-#,##0.00' />
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942529994754:qk]' value='n#,##0&quot; Calls&quot;;-#,##0&quot; Calls&quot;' />
           </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -3336,7 +3342,7 @@
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -4294,13 +4300,13 @@
         </view>
         <style>
           <style-rule element='cell'>
-            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531067908:qk]' value='n#,##0.0;-#,##0.0' />
+            <format attr='text-format' field='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[avg:Calculation_248260942531067908:qk]' value='n#,##0;-#,##0' />
           </style-rule>
           <style-rule element='pane'>
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -4427,7 +4433,7 @@
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -4541,7 +4547,7 @@
             <format attr='background-color' data-class='subtotal' value='#e6e6e6' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -4653,7 +4659,7 @@
             <format attr='background-color' data-class='subtotal' value='#e7f1f5' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='background-color' value='#e6e6e6' />
+            <format attr='background-color' value='#e74d61' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='color' value='#f9eee4' />
@@ -5155,10 +5161,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='1900' minheight='1900' sizing-mode='vscroll' />
+          <size maxheight='1950' minheight='1950' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='54' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='84000' id='53' param='vert' type-v2='layout-flow' w='84000' x='8000' y='8000'>
+            <zone h='100000' id='58' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='57' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
                 <zone fixed-size='54' h='7750' id='27' is-fixed='true' is-scaled='1' param='Image/Logo.png' type-v2='bitmap' w='5500' x='583' y='2000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5181,20 +5187,19 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+                <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/3before.png</image-path>
-                      <tooltip-text>Show Third page</tooltip-text>
+                      <image-path>Image/Overview after.png</image-path>
                     </button-visual-state>
                   </button>
                   <zone-style>
-                    <format attr='border-color' value='#e74d61' />
+                    <format attr='border-color' value='#f9eee4' />
                     <format attr='border-style' value='dotted' />
                     <format attr='border-width' value='1' />
                     <format attr='margin' value='4' />
                     <format attr='padding' value='0' />
-                    <format attr='background-color' value='#ffffff' />
+                    <format attr='background-color' value='#e74d61' />
                   </zone-style>
                 </zone>
                 <zone h='8750' id='29' type-v2='dashboard-object' w='5084' x='82833' y='2375'>
@@ -5213,19 +5218,20 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+                <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/Overview after.png</image-path>
+                      <image-path>Image/3before.png</image-path>
+                      <tooltip-text>Show Third page</tooltip-text>
                     </button-visual-state>
                   </button>
                   <zone-style>
-                    <format attr='border-color' value='#f9eee4' />
+                    <format attr='border-color' value='#e74d61' />
                     <format attr='border-style' value='dotted' />
                     <format attr='border-width' value='1' />
                     <format attr='margin' value='4' />
                     <format attr='padding' value='0' />
-                    <format attr='background-color' value='#e74d61' />
+                    <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
                 <zone fixed-size='173' forceUpdate='true' h='3750' id='44' type-v2='text' w='15584' x='583' y='9750'>
@@ -5274,7 +5280,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5283,7 +5289,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5292,7 +5298,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='35' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+                <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5301,7 +5307,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
+                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page1_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5342,7 +5348,26 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='49' name='Page1_KPI2' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+                <zone h='8500' hidden-by-user='true' id='56' mode='checkdropdown' name='Page1_KPI3' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='74' h='10250' id='55' is-fixed='true' name='Page1_KPI3' w='14500' x='2333' y='26375'>
+                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone h='10000' hidden-by-user='true' id='49' name='Page1_KPI2' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5362,7 +5387,7 @@
                   </zone-style>
                 </zone>
                 <zone fixed-size='280' h='48875' id='23' is-fixed='true' name='Page1_Chart2' w='97668' x='1166' y='49375'>
-                  <layout-cache minheight='197' minwidth='100' type-h='scalable' type-w='scalable' />
+                  <layout-cache cell-count-w='48' minheight='194' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5750,10 +5775,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='2200' minheight='2200' sizing-mode='vscroll' />
+          <size maxheight='2300' minheight='2300' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='64' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='63' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
+            <zone h='100000' id='69' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='68' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
                 <zone fixed-size='54' h='7750' id='27' is-fixed='true' is-scaled='1' param='Image/Logo.png' type-v2='bitmap' w='5500' x='583' y='2000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5776,11 +5801,11 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+                <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/3before.png</image-path>
-                      <tooltip-text>View the payment dashboard</tooltip-text>
+                      <image-path>Image/Overview before.png</image-path>
+                      <tooltip-text>View overview page</tooltip-text>
                     </button-visual-state>
                   </button>
                   <zone-style>
@@ -5807,11 +5832,11 @@
                     <format attr='background-color' value='#e74d61' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+                <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/Overview before.png</image-path>
-                      <tooltip-text>View overview page</tooltip-text>
+                      <image-path>Image/3before.png</image-path>
+                      <tooltip-text>View the payment dashboard</tooltip-text>
                     </button-visual-state>
                   </button>
                   <zone-style>
@@ -5869,7 +5894,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5878,7 +5903,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5887,7 +5912,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='35' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+                <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5896,7 +5921,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
+                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5905,7 +5930,16 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='245' h='33375' id='51' is-fixed='true' name='Page2_Chart1' w='47000' x='18000' y='14375'>
+                <zone h='10000' hidden-by-user='true' id='59' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='263' h='35625' id='51' is-fixed='true' name='Page2_Chart1' w='47000' x='18000' y='14375'>
                   <layout-cache cell-count-h='1' minwidth='0' non-cell-size-h='59' type-h='cell' type-w='scalable' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5916,8 +5950,8 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='245' h='33375' id='49' is-fixed='true' name='Page2_Chart4' w='33832' x='65000' y='14375'>
-                  <layout-cache cell-count-w='4' minheight='190' type-h='scalable' type-w='cell' />
+                <zone fixed-size='263' h='35625' id='49' is-fixed='true' name='Page2_Chart4' w='33832' x='65000' y='14375'>
+                  <layout-cache cell-count-w='4' minheight='191' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5927,7 +5961,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='59' name='Page2_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+                <zone h='8500' hidden-by-user='true' id='66' mode='checkdropdown' name='Page2_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5936,7 +5970,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='72' h='10083' id='54' is-fixed='true' name='Page2_KPI2' w='14502' x='2332' y='26208'>
+                <zone fixed-size='79' h='10833' id='65' is-fixed='true' name='Page2_KPI1' w='14502' x='2332' y='16125'>
                   <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5946,7 +5980,17 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='70' h='9708' id='55' is-fixed='true' name='Page2_KPI3' w='14502' x='2332' y='36291'>
+                <zone fixed-size='78' h='10833' id='54' is-fixed='true' name='Page2_KPI2' w='14502' x='2332' y='26958'>
+                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='39' type-h='cell' type-w='cell' />
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='76' h='10458' id='55' is-fixed='true' name='Page2_KPI3' w='14502' x='2332' y='37791'>
                   <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='36' type-h='cell' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -5956,8 +6000,8 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='49625' id='50' is-fixed='true' name='Page2_Chart3' w='62417' x='1166' y='48625'>
-                  <layout-cache minheight='196' minwidth='100' type-h='scalable' type-w='scalable' />
+                <zone fixed-size='280' h='47375' id='50' is-fixed='true' name='Page2_Chart3' w='62417' x='1166' y='50875'>
+                  <layout-cache minheight='191' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5967,7 +6011,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='49625' id='56' is-fixed='true' name='Page2_Chart2' w='35250' x='63583' y='48625'>
+                <zone fixed-size='280' h='47375' id='56' is-fixed='true' name='Page2_Chart2' w='35250' x='63583' y='50875'>
                   <layout-cache cell-count-w='5' minheight='197' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6153,7 +6197,7 @@
                   </zone>
                 </zone>
                 <zone h='33375' id='62' name='Page3_Chart4' w='32166' x='66667' y='13625'>
-                  <layout-cache minheight='189' type-h='scalable' type-w='cell' />
+                  <layout-cache cell-count-w='3' minheight='189' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6378,10 +6422,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='2400' minheight='2400' sizing-mode='vscroll' />
+          <size maxheight='2450' minheight='2450' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='74' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='73' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
+            <zone h='100000' id='78' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='77' param='vert' type-v2='layout-flow' w='98666' x='667' y='1000'>
                 <zone fixed-size='46' h='6750' id='27' is-fixed='true' is-scaled='1' param='Image/Logo.png' type-v2='bitmap' w='5500' x='583' y='2000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6404,19 +6448,20 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='10' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
+                <zone h='8750' id='9' type-v2='dashboard-object' w='5166' x='77667' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/3after.png</image-path>
+                      <image-path>Image/Overview before.png</image-path>
+                      <tooltip-text>View overview page</tooltip-text>
                     </button-visual-state>
                   </button>
                   <zone-style>
-                    <format attr='border-color' value='#f9eee4' />
+                    <format attr='border-color' value='#e74d61' />
                     <format attr='border-style' value='dotted' />
                     <format attr='border-width' value='1' />
                     <format attr='margin' value='4' />
                     <format attr='padding' value='0' />
-                    <format attr='background-color' value='#e74d61' />
+                    <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
                 <zone h='8750' id='29' type-v2='dashboard-object' w='5084' x='82833' y='2375'>
@@ -6435,20 +6480,19 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='8750' id='9' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
-                  <button action='tabdoc:goto-sheet window-id=&quot;{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}&quot;'>
+                <zone h='8750' id='10' type-v2='dashboard-object' w='5083' x='87917' y='2375'>
+                  <button action='tabdoc:goto-sheet window-id=&quot;{F4692315-C220-4B9D-82AD-DCC084BD16C5}&quot;'>
                     <button-visual-state>
-                      <image-path>Image/Overview before.png</image-path>
-                      <tooltip-text>View overview page</tooltip-text>
+                      <image-path>Image/3after.png</image-path>
                     </button-visual-state>
                   </button>
                   <zone-style>
-                    <format attr='border-color' value='#e74d61' />
+                    <format attr='border-color' value='#f9eee4' />
                     <format attr='border-style' value='dotted' />
                     <format attr='border-width' value='1' />
                     <format attr='margin' value='4' />
                     <format attr='padding' value='0' />
-                    <format attr='background-color' value='#ffffff' />
+                    <format attr='background-color' value='#e74d61' />
                   </zone-style>
                 </zone>
                 <zone fixed-size='173' forceUpdate='true' h='4000' id='44' type-v2='text' w='15584' x='583' y='8750'>
@@ -6497,7 +6541,7 @@
                   </zone-style>
                 </zone>
                 <zone fixed-size='237' h='33375' id='62' is-fixed='true' name='Page3_Chart4' w='32166' x='66667' y='13625'>
-                  <layout-cache minheight='189' type-h='scalable' type-w='cell' />
+                  <layout-cache cell-count-w='3' minheight='189' type-h='scalable' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6519,7 +6563,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='112' h='15000' id='57' is-fixed='true' name='Page3_KPI2' w='12334' x='2333' y='15375'>
+                <zone fixed-size='112' h='15000' id='58' is-fixed='true' name='Page3_KPI4' w='12334' x='2333' y='15375'>
                   <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6540,7 +6584,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='69' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='81750'>
+                <zone h='8500' hidden-by-user='true' id='76' mode='checkdropdown' name='Page3_KPI1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876753801218:nk]' type-v2='filter' w='21666' x='77084' y='28125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6549,7 +6593,17 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='111' h='14875' id='58' is-fixed='true' name='Page3_KPI4' w='12334' x='2333' y='30375'>
+                <zone fixed-size='112' h='14937' id='75' is-fixed='true' name='Page3_KPI1' w='12335' x='16999' y='30312'>
+                  <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='111' h='14875' id='57' is-fixed='true' name='Page3_KPI2' w='12334' x='2333' y='30375'>
                   <layout-cache cell-count-h='1' cell-count-w='1' non-cell-size-h='57' type-h='cell' type-w='cell' />
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -6570,7 +6624,7 @@
                     <format attr='background-color' value='#ffffff' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='31000'>
+                <zone h='8500' hidden-by-user='true' id='33' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Contract Length:nk]' type-v2='filter' values='database' w='21666' x='77084' y='36625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6579,7 +6633,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='42750'>
+                <zone h='8500' hidden-by-user='true' id='34' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Subscription Type:nk]' type-v2='filter' values='database' w='21666' x='77084' y='45125'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6588,7 +6642,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='10000' hidden-by-user='true' id='35' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='55250'>
+                <zone fixed-size='74' h='10250' hidden-by-user='true' id='35' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Support Calls:qk]' type-v2='filter' values='database' w='21666' x='77084' y='53625'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6597,7 +6651,16 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='69250'>
+                <zone h='8500' hidden-by-user='true' id='36' mode='checkdropdown' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Calculation_1036390876521951232:nk]' type-v2='filter' values='database' w='21666' x='77084' y='63875'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone h='10000' hidden-by-user='true' id='69' name='Page3_Chart1' param='[federated.1g8j1k10bpq0m6140fmdj1obe5af].[none:Total Spend:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='21666' x='77084' y='72375'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6829,7 +6892,7 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='29' />
       <simple-id uuid='{83E8E2D0-01FA-4FFF-92AD-7BFF3D92FF51}' />
     </window>
     <window class='worksheet' name='Page2_KPI1'>
@@ -7043,7 +7106,7 @@
       </viewpoint>
       <simple-id uuid='{1BA647D3-60DB-4881-9DF2-642F3E06E56E}' />
     </window>
-    <window class='dashboard' maximized='true' name='Second page'>
+    <window class='dashboard' name='Second page'>
       <viewpoints>
         <viewpoint name='Page2_Chart1'>
           <zoom type='entire-view' />
@@ -7308,7 +7371,7 @@
       </viewpoint>
       <simple-id uuid='{EC43FA89-6D10-4D73-B67A-3981771C172F}' />
     </window>
-    <window class='dashboard' name='Third Page'>
+    <window class='dashboard' maximized='true' name='Third Page'>
       <viewpoints>
         <viewpoint name='Page3_Chart1'>
           <zoom type='entire-view' />
@@ -7335,13 +7398,13 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='9' />
       <simple-id uuid='{F4692315-C220-4B9D-82AD-DCC084BD16C5}' />
     </window>
     <window class='worksheet' name='Payment Delay-SupportCalls-Relation'>
       <cards>
         <edge name='left'>
-          <strip size='157'>
+          <strip size='156'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
